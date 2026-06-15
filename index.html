@@ -142,8 +142,16 @@
   }
   .seccion footer{ margin-top:40px; text-align:center; font-family:'Space Grotesk',sans-serif; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); border-top:1px solid var(--linea); padding-top:16px; }
   @media (max-width:680px){
+    .seccion{ font-size:16.5px; }
+    .seccion .hoja,.seccion .pliego,.seccion .marco{ padding:22px 18px 38px; }
     .seccion .lead,.seccion .grilla,.seccion .graficos,.seccion .duo{ grid-template-columns:1fr; }
-    .seccion .grilla{ background:none; } .seccion .indic{ grid-template-columns:repeat(2,1fr); }
+    .seccion .grilla{ background:none; }
+    .seccion .indic{ grid-template-columns:repeat(2,1fr); }
+    /* En celular: nada de texto justificado (deja huecos feos). Todo a la izquierda. */
+    .seccion .fallo-texto,.seccion .doctrina-texto,.seccion .texto,.seccion .resumen,
+    .seccion .editorial,.seccion .editor,.seccion .analisis,.seccion .concepto-texto,
+    .seccion .novedad-texto,.seccion .nota-txt,.seccion .lead-resumen{ text-align:left; }
+    .seccion .fallo,.seccion .concepto{ padding:18px; }
   }
 
 </style>
