@@ -40,14 +40,15 @@ async function pedir(candidatas) {
 Te paso titulares del mundo (algunos en inglés).
 REGLAS:
 1) Elegí entre 8 y ${MAX_NOTICIAS} noticias INTERNACIONALES de verdadera relevancia (geopolítica, conflictos, economía global, democracia, ciencia/sociedad de impacto). La importancia manda.
-2) Buscá DIVERSIDAD DE REGIONES (no todo de un solo lugar) y de fuentes. Evitá deportes, farándula y noticias locales argentinas (esto es el mundo).
+2) Buscá DIVERSIDAD DE REGIONES y de fuentes. EXCLUÍ todo lo centrado en Argentina (riesgo país, dólar, economía o política argentina): eso va en otras secciones; acá es SOLO el mundo. Evitá también deportes y farándula.
 3) Si una noticia se repite, elegí una sola.
 4) Ordená por importancia (la PRIMERA es la principal).
-Para CADA una devolvé: "region" (una de: Estados Unidos, América Latina, Europa, Medio Oriente, Asia, África, Oceanía, Global), "titulo" (en español, traducí si la fuente está en inglés, fiel y claro) y "resumen" (objetivo, 3 oraciones).
+Para CADA noticia elegida devolvé: "indice" (el número de la lista), "titulo_original" (copiá TEXTUALMENTE el comienzo del TITULO tal como figura en la lista, para poder identificarla), "region" (una de: Estados Unidos, América Latina, Europa, Medio Oriente, Asia, África, Oceanía, Global), "titulo" (en español, traducí si está en inglés, fiel y claro) y "resumen" (objetivo, 3 oraciones).
+IMPORTANTE: "indice" y "titulo_original" deben ser de la MISMA noticia de la lista. No combines el título de una con el índice de otra.
 Además, un "analisis" geopolítico del día (3-4 oraciones) que conecte los grandes temas.
 
 Devolvé SOLO este JSON:
-{ "seleccion": [ { "indice": <n>, "region": "", "titulo": "", "resumen": "" } ], "analisis": "" }
+{ "seleccion": [ { "indice": <n>, "titulo_original": "", "region": "", "titulo": "", "resumen": "" } ], "analisis": "" }
 
 Lista:
 ${listado}`;
@@ -130,7 +131,23 @@ async function main() {
   const candidatas = todas.slice(0, 50);
   console.log(`2) La IA elige, traduce y resume (${candidatas.length} candidatas)...`);
   const r = await pedir(candidatas);
-  const notas = (r.seleccion || []).map((s) => ({ nota: candidatas[s.indice], region: s.region, titulo: s.titulo, resumen: s.resumen })).filter((x) => x.nota);
+  // Resuelve la noticia real: usa el índice solo si su título coincide con el que dio la IA;
+  // si no, busca el candidato cuyo título coincida. Así la foto y el link siempre van con el título.
+  const norm = (t) => (t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+  function resolver(s) {
+    const orig = norm(s.titulo_original);
+    const porIndice = candidatas[s.indice];
+    if (porIndice && orig.length > 6 && norm(porIndice.titulo).includes(orig.slice(0, 18))) return porIndice;
+    if (orig.length > 6) {
+      const hallado = candidatas.find((c) => norm(c.titulo).includes(orig.slice(0, 22)) || orig.includes(norm(c.titulo).slice(0, 22)));
+      if (hallado) return hallado;
+    }
+    return porIndice;
+  }
+  const vistos = new Set();
+  const notas = (r.seleccion || [])
+    .map((s) => ({ nota: resolver(s), region: s.region, titulo: s.titulo, resumen: s.resumen }))
+    .filter((x) => x.nota && x.nota.link && !vistos.has(x.nota.link) && vistos.add(x.nota.link));
   console.log(`3) Armando Atlas con ${notas.length} noticias...`);
   const html = armarHtml(notas, r.analisis || "");
   const salida = join(CARPETA, "mundo.html");
