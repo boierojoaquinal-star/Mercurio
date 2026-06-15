@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Salón · Arte y cultura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{ --papel:#f3efe8; --tinta:#221c19; --terra:#7a3b2e; --gris:#7c6f66; --linea:#ddd3c6; }
+  *{ box-sizing:border-box; } body{ margin:0; background:#e7ddcd; color:var(--tinta); font-family:'Spectral',Georgia,serif; font-size:18px; line-height:1.7; }
+  .hoja{ max-width:920px; margin:18px auto; background:var(--papel); border:1px solid var(--linea); box-shadow:0 0 0 7px var(--papel),0 0 0 8px var(--linea),0 16px 44px rgba(0,0,0,.28); padding:34px 42px 56px; }
+  .top{ display:flex; justify-content:space-between; font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gris); border-bottom:1px solid var(--linea); padding-bottom:8px; }
+  h1.cab{ font-family:'Fraunces',serif; font-weight:600; font-style:italic; font-size:clamp(46px,10vw,82px); text-align:center; color:var(--terra); margin:10px 0 6px; }
+  .intro{ text-align:center; font-family:'Fraunces',serif; font-style:italic; font-size:19px; color:#4a3f37; max-width:680px; margin:0 auto 10px; }
+  .seccion-tit{ display:flex; align-items:center; gap:14px; margin:40px 0 26px; }
+  .seccion-tit h2{ font-family:'Space Grotesk',sans-serif; font-size:13px; letter-spacing:4px; text-transform:uppercase; margin:0; color:var(--terra); white-space:nowrap; }
+  .seccion-tit .raya{ flex:1; height:1px; background:var(--linea); }
+  .obra{ position:relative; margin-bottom:48px; }
+  .obra-num{ font-family:'Fraunces',serif; font-style:italic; font-size:20px; color:var(--terra); margin-bottom:8px; }
+  .obra-img{ display:block; width:100%; max-height:560px; object-fit:contain; background:#2a2420; border:1px solid var(--linea); }
+  .sin-img{ display:flex; align-items:center; justify-content:center; min-height:220px; background:#2a2420; color:#cdbfae; font-family:'Space Grotesk',sans-serif; font-size:13px; text-align:center; padding:20px; }
+  .obra-cuerpo{ margin-top:14px; }
+  .obra-tit{ font-family:'Fraunces',serif; font-weight:600; font-size:30px; line-height:1.1; margin:0 0 4px; }
+  .meta{ font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); margin-bottom:12px; }
+  .texto{ font-size:18px; text-align:justify; margin:0; }
+  .texto::first-letter{ font-family:'Fraunces',serif; font-weight:600; font-size:46px; line-height:38px; float:left; padding:6px 10px 0 0; color:var(--terra); }
+  .duo{ display:grid; grid-template-columns:1fr 1fr; gap:34px; }
+  .cult .et{ font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--terra); margin-bottom:10px; border-bottom:1px solid var(--linea); padding-bottom:6px; }
+  .cult-img{ display:block; width:100%; max-height:340px; object-fit:contain; background:#2a2420; border:1px solid var(--linea); margin-bottom:12px; }
+  .cult-tit{ font-family:'Fraunces',serif; font-weight:600; font-size:24px; line-height:1.12; margin:0 0 4px; }
+  .cult .texto::first-letter{ font-size:30px; line-height:26px; padding:4px 8px 0 0; }
+  .news{ list-style:none; margin:0; padding:0; }
+  .news .nota{ border-top:1px solid var(--linea); padding:16px 0; }
+  .news .fuente{ font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--terra); }
+  .news .nota-tit{ display:block; font-family:'Fraunces',serif; font-weight:600; font-size:21px; line-height:1.2; color:var(--tinta); text-decoration:none; margin:3px 0 6px; }
+  .news .nota-tit:hover{ color:var(--terra); }
+  .news .nota-txt{ margin:0; font-size:16px; color:#43382f; }
+  footer{ margin-top:44px; text-align:center; font-family:'Space Grotesk',sans-serif; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); border-top:1px solid var(--linea); padding-top:16px; }
+  @media (max-width:680px){ .hoja{ padding:24px 20px 40px; } .duo{ grid-template-columns:1fr; } }
+</style>
+</head><body>
+  <div class="hoja">
+    <div class="top"><span>Arte y cultura · histórica y contemporánea</span><span>lunes, 15 de junio de 2026</span></div>
+    <h1 class="cab">Salón</h1>
+    <div class="intro">Qué alegría encontrarnos una vez más en este rincón de contemplación, querido amigo, para nutrir el espíritu en este templado quince de junio. Hoy preparé una selección exquisita y poco transitada que, le aseguro, transformará por completo su manera de mirar el mundo.</div>
+
+    <div class="seccion-tit"><h2>Las obras del día</h2><div class="raya"></div></div>
+    
+  <article class="obra">
+    <div class="obra-num">1</div>
+    <img class="obra-img" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Giorgione_-_Das_Gewitter.jpg" alt="La tempestad" loading="lazy" />
+    <div class="obra-cuerpo">
+      <h3 class="obra-tit">La tempestad</h3>
+      <div class="meta">Giorgione · 1508 · Renacimiento Veneciano · Galería de la Academia, Venecia</div>
+      <p class="texto">Nos hallamos ante uno de los mayores enigmas de la historia del arte occidental, pintado por el misterioso Giorgione en los albores del siglo XVI. A diferencia de sus contemporáneos florentinos, obsesionados con el dibujo ríspido, este maestro veneciano priorizó la atmósfera y el color para sugerir una emoción. La escena nos muestra a un soldado y a una mujer amamantando, pero nadie ha logrado descifrar con certeza qué historia bíblica o mitológica representa. Lo verdaderamente revolucionario aquí es que el paisaje ya no es un simple fondo, sino el protagonista absoluto que unifica la composición con su luz tormentosa. Al contemplarla, preste atención a cómo el rayo en el cielo parece electrificar el aire húmedo, anticipando el Romanticismo por casi tres siglos.</p>
+    </div>
+  </article>
+
+  <article class="obra">
+    <div class="obra-num">2</div>
+    <div class="obra-img sin-img">El taller de la tejedora de alfombras</div>
+    <div class="obra-cuerpo">
+      <h3 class="obra-tit">El taller de la tejedora de alfombras</h3>
+      <div class="meta">Baya Mahieddine · 1948 · Arte Moderno Argelino (Surrealismo) · Colección privada</div>
+      <p class="texto">Déjese cautivar por la vibrante cosmogonía de Baya Mahieddine, una artista argelina que deslumbró al mismísimo Picasso y a los surrealistas en el París de posguerra cuando apenas tenía dieciséis años. Huérfana desde la infancia y autodidacta, Baya volcó en sus lienzos una resistencia cultural bellísima frente al colonialismo francés, fusionando el arte folclórico magrebí con una paleta de colores desbordante. Esta obra nos sumerge en un universo femenino de simetrías audaces, donde las figuras no respetan las leyes de la perspectiva occidental. El uso del azul cobalto y los patrones ornamentales crean un ritmo musical que prescinde de las sombras para celebrar la vida pura. Observe cómo los rostros de sus mujeres, de perfil pero con ojos frontales, desafían la mirada del espectador con una dignidad poética inquebrantable.</p>
+    </div>
+  </article>
+
+  <article class="obra">
+    <div class="obra-num">3</div>
+    <div class="obra-img sin-img">El imperio de las luces</div>
+    <div class="obra-cuerpo">
+      <h3 class="obra-tit">El imperio de las luces</h3>
+      <div class="meta">René Magritte · 1954 · Surrealismo · Museos Reales de Bellas Artes de Bélgica</div>
+      <p class="texto">El maestro belga René Magritte tenía la asombrosa capacidad de hacernos dudar de la realidad utilizando elementos cotidianos con una precisión casi fotográfica. En esta obra cumbre, nos presenta un paisaje nocturno donde una solitaria farola ilumina una callejuela oscura, pero al alzar la vista nos topamos con un cielo diurno, radiante y salpicado de nubes esponjosas. Esta paradoja visual, donde el día y la noche coexisten en perfecta armonía, produce una profunda sensación de extrañamiento y misterio existencial. Magritte no buscaba pintar fantasías delirantes, sino revelar el misterio oculto en lo que consideramos normal. Fíjese en cómo el reflejo del agua duplica la oscuridad, obligando a nuestra mente a reconciliar dos verdades contradictorias en un solo instante.</p>
+    </div>
+  </article>
+
+    <div class="seccion-tit"><h2>Para escuchar y ver</h2><div class="raya"></div></div>
+    <div class="duo">
+  <article class="cult">
+    <div class="et">Álbum del día</div>
+    <div class="cult-img sin-img">The Black Saint and the Sinner Lady</div>
+    <h3 class="cult-tit">The Black Saint and the Sinner Lady</h3>
+    <div class="meta">Charles Mingus · 1963 · Avant-garde Jazz</div>
+    <p class="texto">Nos adentramos en una de las catedrales sonoras del siglo XX, concebida por el volcánico contrabajista y compositor Charles Mingus como una suite de ballet en seis movimientos. Grabado en un momento de extrema turbulencia social y lucha por los derechos civiles en Estados Unidos, este álbum es un torrente de pasión, dolor y redención. Mingus combinó la improvisación del jazz con la estructura de la música clásica y el desgarro del blues, logrando una densidad orquestal que eriza la piel. Es fundamental que escuche el diálogo entre el saxo alto de Charlie Mariano y la guitarra flamenca de Jay Berliner, una audacia estilística inaudita para la época. Déjese llevar por los cambios bruscos de tempo; sentirá cómo la música respira, ruge y llora como si fuera un organismo vivo.</p>
+  </article>
+  <article class="cult">
+    <div class="et">Película del día</div>
+    <div class="cult-img sin-img">El espíritu de la colmena</div>
+    <h3 class="cult-tit">El espíritu de la colmena</h3>
+    <div class="meta">Víctor Erice · 1973</div>
+    <p class="texto">En las postrimerías de la dictadura franquista, el director español Víctor Erice filmó esta obra de arte absoluta, utilizando la sutileza y la metáfora para evadir la censura de la época. La historia sigue a Ana, una niña de seis años que queda fascinada tras ver la película de Frankenstein en su pequeño pueblo de la meseta castellana en 1940. A través de la mirada inocente de la pequeña, Erice retrata el silencio asfixiante, el trauma de la posguerra y la soledad de una familia rota por el dolor invisible. La fotografía de Luis Cuadrado es un milagro visual, donde los interiores de la casa están bañados en tonos dorados que emulan la luz dentro de una colmena de abejas. Preste especial atención a los silencios y a la soberbia actuación natural de la niña Ana Torrent; allí reside la verdadera poesía del cine.</p>
+  </article></div>
+
+    <div class="seccion-tit"><h2>Noticias de cultura</h2><div class="raya"></div></div>
+    <ul class="news"><li class="nota"><span class="fuente">Infobae Cultura</span><a class="nota-tit" href="https://www.infobae.com/cultura/2026/06/15/una-muestra-con-el-arte-como-respuesta-a-la-ultima-dictadura-argentina/" target="_blank" rel="noopener">Una muestra con el arte como respuesta a la última dictadura argentina</a><p class="nota-txt">La exposición &quot;La memoria de la colección&quot; indaga en las huellas de la violencia política en la producción artística argentina a medio siglo del golpe militar. A través de piezas históricas, la muestra propone una profunda reflexión estética sobre la dictadura.</p></li><li class="nota"><span class="fuente">Infobae Cultura</span><a class="nota-tit" href="https://www.infobae.com/cultura/2026/06/15/todo-borges-nos-dice-que-la-literatura-nunca-es-un-catecismo-alberto-manguel-en-ginebra-a-40-anos-de-la-muerte-del-escritor/" target="_blank" rel="noopener">“Todo Borges nos dice que la literatura nunca es un catecismo”: Alberto Manguel en Ginebra, a 40 años de la muerte del escritor</a><p class="nota-txt">En el marco del cuadragésimo aniversario del fallecimiento de Jorge Luis Borges, el escritor Alberto Manguel ofreció una destacada disertación en Ginebra. Durante el encuentro, se analizó la vigencia del autor de &quot;El Aleph&quot; y su concepción de la literatura como un espacio ajeno a los dogmatismos.</p></li><li class="nota"><span class="fuente">The Art Newspaper</span><a class="nota-tit" href="https://www.theartnewspaper.com/2026/06/15/the-art-world-honours-david-hockney-who-flew-the-flag-higher-than-any-other-british-artist" target="_blank" rel="noopener">The art world honours David Hockney, ‘who flew the flag higher than any other British artist’</a><p class="nota-txt">El ámbito de las artes visuales despide al célebre pintor David Hockney, fallecido a los 88 años de edad. Diversas personalidades de la cultura británica rindieron tributo a su figura, destacándolo como uno de los máximos referentes del arte contemporáneo.</p></li><li class="nota"><span class="fuente">Infobae Cultura</span><a class="nota-tit" href="https://www.infobae.com/cultura/2026/06/15/valeria-luiselli-y-su-nueva-y-esperada-novela-cada-vez-que-se-cuenta-el-pasado-se-esta-reescribiendo-el-presente/" target="_blank" rel="noopener">Valeria Luiselli y su nueva y esperada novela: “Cada vez que se cuenta el pasado, se está reescribiendo el presente”</a><p class="nota-txt">La escritora mexicana Valeria Luiselli presenta su nueva novela &quot;Principio, medio, fin&quot;, una obra que explora los lazos míticos y familiares en Sicilia. A partir del viaje de sus protagonistas, la autora reflexiona sobre cómo la reinterpretación del pasado reconfigura el presente.</p></li><li class="nota"><span class="fuente">Ñ (Clarín)</span><a class="nota-tit" href="https://www.clarin.com/cultura/corona-paises-bajos-abre-debate-restitucion-piezas-origen-colonial_0_U83n9ziLhU.html" target="_blank" rel="noopener">La corona de Países Bajos abre el debate sobre la restitución de piezas de origen colonial</a><p class="nota-txt">Una investigación independiente en los Países Bajos ha encendido el debate sobre el origen de las piezas de la colección real procedentes de antiguas colonias. El informe advierte que diversos objetos patrimoniales de Indonesia y el Caribe podrían haber sido obtenidos mediante el saqueo o la violencia.</p></li></ul>
+
+    <footer>Salón · sección arte y cultura de Mercurio · lunes, 15 de junio de 2026<br/>Curaduría por IA · imágenes: Wikimedia Commons · noticias: La Nación, Ñ, Infobae, The Art Newspaper, El País</footer>
+  </div>
+</body></html>

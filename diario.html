@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mercurio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --papel:#f1e7d0; --papel2:#ece0c4; --tinta:#241b10; --oro:#9c7a37;
+    --oxido:#6d1a16; --gris:#5f5341; --linea:#cbbb95;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background:#e6d9bb;
+    color:var(--tinta); font-family:'EB Garamond',Georgia,serif;
+    font-size:18px; line-height:1.6;
+  }
+  .marco{
+    max-width:1080px; margin:18px auto; background:var(--papel);
+    background-image:radial-gradient(circle at 50% 0,#f6eedb,transparent 60%);
+    border:1px solid var(--oro); box-shadow:0 0 0 8px var(--papel), 0 0 0 9px var(--linea), 0 18px 50px rgba(0,0,0,.35);
+    padding:32px 34px 56px;
+  }
+  /* ---- CABECERA ---- */
+  .masthead{ text-align:center; }
+  .kicker-row{
+    display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+    font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--gris); border-top:1px solid var(--tinta); border-bottom:1px solid var(--tinta);
+    padding:7px 0; margin-bottom:14px;
+  }
+  .kicker-row .orn{ color:var(--oro); }
+  .nameplate{
+    font-family:'Cinzel',serif; font-weight:900; text-transform:uppercase;
+    font-size:clamp(46px,12vw,98px); line-height:1; letter-spacing:6px; margin:6px 0 2px;
+    text-shadow:1px 1px 0 rgba(156,122,55,.25);
+  }
+  .filete{ display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 6px; }
+  .filete::before,.filete::after{ content:""; height:0; border-top:3px double var(--tinta); width:min(160px,30%); }
+  .filete span{ color:var(--oro); font-size:22px; }
+  .lema{ font-style:italic; font-size:15px; color:var(--gris); margin-bottom:6px; }
+  /* ---- TITULO DE SECCION ---- */
+  .seccion-titulo{ display:flex; align-items:center; justify-content:center; gap:18px; margin:34px 0 26px; }
+  .seccion-titulo::before,.seccion-titulo::after{ content:""; flex:1; border-top:3px double var(--linea); }
+  .seccion-titulo h3{
+    font-family:'Cinzel',serif; font-weight:700; font-size:clamp(18px,3vw,26px);
+    letter-spacing:5px; text-transform:uppercase; margin:0; white-space:nowrap;
+  }
+  /* ---- NOTA PRINCIPAL ---- */
+  .lead{ display:grid; grid-template-columns:1.05fr .95fr; gap:32px; align-items:center;
+    padding-bottom:30px; margin-bottom:30px; border-bottom:4px double var(--tinta); }
+  .lead-foto{ height:400px; background-size:cover; background-position:center;
+    border:1px solid var(--linea); filter:sepia(.14) contrast(1.02); }
+  .lead-titulo{ font-family:'Cormorant Garamond',serif; font-weight:700; line-height:1.04;
+    font-size:clamp(34px,4.4vw,56px); margin:6px 0 14px; }
+  .lead-resumen{ font-size:19px; margin:0 0 16px; }
+  .lead-resumen::first-letter{ float:left; font-family:'Cinzel',serif; font-weight:700;
+    font-size:62px; line-height:46px; padding:4px 12px 0 0; color:var(--oxido); }
+  /* ---- GRILLA DEL RESTO ---- */
+  .grilla{ display:grid; grid-template-columns:1fr 1fr; gap:36px;
+    background:linear-gradient(var(--linea),var(--linea)) no-repeat;
+    background-size:1px calc(100% - 24px); background-position:center 12px; }
+  .nota{ }
+  .foto{ width:100%; height:210px; background-size:cover; background-position:center;
+    border:1px solid var(--linea); margin-bottom:12px; filter:sepia(.14) contrast(1.02); }
+  .sin-foto{ display:flex; align-items:center; justify-content:center; color:#efe3c6;
+    background:#3a2c1c !important; font-family:'Cinzel',serif; font-size:13px; letter-spacing:2px;
+    text-transform:uppercase; filter:none; }
+  .fuente{ font-family:'Cinzel',serif; font-size:11px; text-transform:uppercase; letter-spacing:2px;
+    color:var(--oxido); font-weight:600; }
+  .titulo{ font-family:'Cormorant Garamond',serif; font-weight:700; line-height:1.12;
+    font-size:27px; margin:5px 0 10px; }
+  .resumen{ font-size:17.5px; margin:0 0 12px; color:#2c2316; }
+  .leer{ font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:1px; text-transform:uppercase;
+    color:var(--oxido); text-decoration:none; font-weight:600; }
+  .leer:hover{ text-decoration:underline; }
+  /* ---- CONCLUSION ---- */
+  .editorial{ margin-top:38px; background:var(--papel2); border:1px solid var(--oro);
+    box-shadow:0 0 0 5px var(--papel), 0 0 0 6px var(--linea); padding:26px 30px; }
+  .editorial .marbete{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:14px; }
+  .editorial .marbete::before,.editorial .marbete::after{ content:""; flex:1; border-top:1px solid var(--oro); }
+  .editorial h4{ font-family:'Cinzel',serif; font-weight:700; font-size:15px; letter-spacing:3px;
+    text-transform:uppercase; margin:0; color:var(--oxido); white-space:nowrap; }
+  .editorial p{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:20px;
+    line-height:1.5; text-align:justify; margin:0; }
+  .editorial p::first-letter{ font-family:'Cinzel',serif; font-style:normal; font-weight:700;
+    font-size:40px; color:var(--oxido); padding-right:4px; }
+  /* ---- PIE ---- */
+  footer{ margin-top:40px; text-align:center; font-family:'Cinzel',serif; font-size:11px;
+    letter-spacing:1.5px; color:var(--gris); text-transform:uppercase;
+    border-top:3px double var(--tinta); padding-top:16px; }
+  footer .orn{ color:var(--oro); font-size:16px; display:block; margin-bottom:8px; }
+  /* ---- CELULAR ---- */
+  @media (max-width:720px){
+    .marco{ padding:22px 18px 40px; }
+    .lead{ grid-template-columns:1fr; }
+    .lead-foto{ height:240px; }
+    .grilla{ grid-template-columns:1fr; background:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="marco">
+    <header class="masthead">
+      <div class="kicker-row">
+        <span>Córdoba · Argentina</span>
+        <span class="orn">&#10086;</span>
+        <span>Edición de la mañana</span>
+        <span class="orn">&#10086;</span>
+        <span>Año MMXXVI · N.º 166</span>
+      </div>
+      <h1 class="nameplate">Mercurio</h1>
+      <div class="filete"><span>&#9884;</span></div>
+      <div class="lema">Crónica del día · ediciones de mañana y noche</div>
+      <div class="lema" style="font-style:normal;letter-spacing:1px;">lunes, 15 de junio de 2026</div>
+    </header>
+
+    <div class="seccion-titulo"><h3>Córdoba y Argentina</h3></div>
+
+    
+  <article class="lead">
+    <div class="lead-foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/WG5OQ22GMFGQFJZBZQQR3TJAGU.jpg?auth=17d1b657a0f8926a4968581e0e1b269bf7bce2339d0b2e230943a72c930e9ff8&amp;smart=true&amp;width=428&amp;height=321')"></div>
+    <div class="lead-cuerpo">
+      <span class="fuente">La Nación</span>
+      <h2 class="lead-titulo">Por decreto, el Gobierno flexibiliza los requisitos para la designación de jueces de la Corte Suprema</h2>
+      <p class="lead-resumen">El Poder Ejecutivo Nacional modificó mediante un decreto de necesidad y urgencia las exigencias para el nombramiento de los magistrados del máximo tribunal de justicia. La nueva normativa suprime las directrices de paridad de género, especialización y equilibrio geográfico que regían los procesos de selección anteriores. Esta medida busca agilizar la cobertura de las vacantes actuales bajo un esquema de mayor discrecionalidad política.</p>
+      <a class="leer" href="https://www.lanacion.com.ar/politica/por-decreto-el-gobierno-flexibiliza-los-requisitos-para-la-designacion-de-jueces-de-la-corte-suprema-nid15062026/" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+    </div>
+  </article>
+
+    <div class="grilla">
+      
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/03/27/0FUSMLCn5_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Pakistán anunció que Estados Unidos e Irán llegaron a un acuerdo y que se firmará el viernes: Trump ordenó abrir el estrecho de Ormuz</h3>
+        <p class="resumen">El gobierno de Pakistán anunció formalmente la concreción de un acuerdo de paz histórico entre Estados Unidos e Irán, cuya firma se ratificará en territorio suizo. El presidente Donald Trump confirmó el entendimiento y ordenó la reapertura del estratégico estrecho de Ormuz para el tránsito marítimo internacional. Desde Teherán aseguraron que este pacto bilateral implica el cese inmediato de las hostilidades bélicas en la región de Medio Oriente.</p>
+        <a class="leer" href="https://www.clarin.com/mundo/pakistan-anuncio-listo-acuerdo-estados-unidos-iran_0_st0De3SfHF.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/EKJLZ5IYO5GRVOTBWWML3XQHCY.JPEG?auth=53583fdf58c03abacf01fdf695dcd781d9df4c278d92cf30f96bce153ea95c3a&amp;smart=true&amp;width=1367&amp;height=1025')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Nación</span>
+        <h3 class="titulo">Senado: la oposición dialoguista le quita su respaldo y la continuidad de Adorni pende de un hilo</h3>
+        <p class="resumen">La permanencia de Manuel Adorni en la Jefatura de Gabinete se encuentra en una situación crítica debido al retiro del respaldo de los bloques legislativos dialoguistas en el Senado. Las negociaciones de último momento impulsadas por el oficialismo no han logrado contener el descontento de la oposición moderada de cara a la sesión de esta semana. Se proyecta que el cuerpo legislativo avance con una moción de censura que compromete la estabilidad del funcionario.</p>
+        <a class="leer" href="https://www.lanacion.com.ar/politica/senado-la-oposicion-dialoguista-le-quita-su-respaldo-y-la-continuidad-de-adorni-pende-de-un-hilo-nid14062026/" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.infobae.com/resizer/v2/DV2HNPDQZ5ANDJW3M2UWPPAJ7I.jpg?auth=efcffa1bd71ef7a7bfb10764301d91058475afb33944186cb5bbbb6f2085d3fb&amp;smart=true&amp;width=1920&amp;height=1080')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Infobae</span>
+        <h3 class="titulo">Las inconsistencias, agregados y rectificaciones con las que Adorni intentó justificar el aumento de sus bienes y nivel de gastos</h3>
+        <p class="resumen">Una auditoría sobre las declaraciones juradas del jefe de Gabinete reveló inconsistencias significativas y rectificaciones de último momento ante la Oficina Anticorrupción. La investigación patrimonial detectó transferencias de activos digitales superiores a los cien mil dólares durante el ejercicio de la función pública en 2024. El funcionario se enfrenta ahora a la exigencia legal de justificar el origen de los fondos en efectivo y la evolución de sus bienes.</p>
+        <a class="leer" href="https://www.infobae.com/politica/2026/06/14/las-inconsistencias-agregados-y-rectificaciones-con-las-que-adorni-intento-justificar-el-aumento-de-sus-bienes-y-nivel-de-gastos/" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('http://www.lavoz.com.ar/images/2026/03/20/o6IsBfuTSX_1200x675.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Voz</span>
+        <h3 class="titulo">Llaryora designará a ganadores de 200 concursos que estaban congelados</h3>
+        <p class="resumen">El gobernador de Córdoba, Martín Llaryora, efectivizará la designación de los ganadores de doscientos concursos públicos que permanecían congelados desde la gestión de Juan Schiaretti en 2022. La medida surge como una respuesta política directa a la controversia social y legislativa por los criterios de contratación estatal en la provincia. No obstante, la administración central ratificó su postura de no incrementar la planta permanente de la administración pública.</p>
+        <a class="leer" href="https://www.lavoz.com.ar/politica/llaryora-designara-ganadores-200-concursos-congelados_0_t7vxqsjdeP.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2024/04/06/yX4ylE9YJ_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Hay 150 impuestos en la Argentina: más de la mitad son municipales y solo 6 explican el 85% de la recaudación</h3>
+        <p class="resumen">Un relevamiento sobre la estructura tributaria argentina determinó la coexistencia de ciento cincuenta gravámenes activos, de los cuales más de la mitad corresponden a tasas de jurisdicción municipal. A pesar de una leve reducción en los impuestos de carácter nacional, las provincias y los municipios mantuvieron o incrementaron su presión fiscal. El informe destaca que apenas seis tributos concentran el ochenta y cinco por ciento de la recaudación consolidada del país.</p>
+        <a class="leer" href="https://www.clarin.com/economia/150-impuestos-argentina-mitad-municipales-solo-6-explican-85-recaudacion_0_Mqd5npAGMB.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/06/14/vmAX76fUI_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Ucrania denuncia que Rusia construye nuevas bases aéreas en sitios clave de sus fronteras para atacar Europa</h3>
+        <p class="resumen">El presidente de Ucrania, Volodimir Zelenski, alertó sobre la edificación de nuevas bases aéreas rusas en zonas limítrofes estratégicas orientadas hacia el territorio europeo. El mandatario denunció que el Kremlin consolidó una doctrina de confrontación geopolítica de largo plazo contra los sistemas democráticos occidentales. Países escandinavos como Noruega ya han iniciado tareas de monitoreo militar ante el despliegue de infraestructura militar en las fronteras.</p>
+        <a class="leer" href="https://www.clarin.com/mundo/ucrania-denuncia-rusia-construye-nuevas-bases-aereas-sitios-clave-fronteras-atacar-europa_0_gXLLBKz60P.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('http://www.lavoz.com.ar/images/2026/06/03/1ZNUWZIs7S_1200x675.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Voz</span>
+        <h3 class="titulo">Pedidos de Jury contra Garzón y Rodríguez: el oficialismo mide daños y diseña estrategia</h3>
+        <p class="resumen">La Comisión de Enjuiciamiento de Córdoba analiza tres pedidos de jury contra los fiscales Garzón y Rodríguez, lo que ha puesto en alerta al oficialismo provincial. El caso del fiscal Iván Rodríguez, recientemente nombrado en el ámbito penitenciario, representa el mayor desafío político para la administración de Llaryora. El gobierno de la provincia evalúa el impacto institucional de estas denuncias mientras define su estrategia de contención en el plano legislativo.</p>
+        <a class="leer" href="https://www.lavoz.com.ar/politica/pedidos-jury-garzon-rodriguez-oficialismo-mide-danos-disena-estrategia_0_KuxFma6MKD.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/06/14/uoxtBlAoT_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Murió Taty Almeida, presidenta de Madres de Plaza de Mayo Línea Fundadora</h3>
+        <p class="resumen">A los noventa y cinco años de edad, falleció Taty Almeida, presidenta de la Línea Fundadora de Madres de Plaza de Mayo y figura histórica de los derechos humanos en el país. Su deceso generó profundas muestras de pesar en todo el arco político nacional, destacando su trayectoria en la búsqueda de memoria, verdad y justicia. Sus restos serán despedidos en una ceremonia pública que congregará a referentes sociales, políticos y de la militancia civil.</p>
+        <a class="leer" href="https://www.clarin.com/politica/murio-taty-almeida-madre-plaza-mayo-linea-fundadora_0_JL1fX6tliv.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/04/17/1Iaou38MS_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Los cambios en la venta de tierras a extranjeros dilatan la ley de propiedad privada de Sturzenegger en el Congreso</h3>
+        <p class="resumen">El tratamiento legislativo del proyecto de ley de propiedad privada impulsado por Federico Sturzenegger sufrió postergaciones en el Senado de la Nación. Las discrepancias en torno a la flexibilización de los límites para la adquisición de tierras por parte de ciudadanos extranjeros motivaron la decisión del oficialismo de retirar la norma del temario. Las provincias exigen mantener facultades de control y autorización frente a las atribuciones que pretende centralizar el Estado nacional.</p>
+        <a class="leer" href="https://www.clarin.com/politica/cambios-venta-tierras-extranjeros-dilatan-ley-propiedad-privada-sturzenegger-congreso_0_6mIBSSY32r.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('http://www.lavoz.com.ar/images/2026/04/08/rpJy8m9EBo_1200x675.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Voz</span>
+        <h3 class="titulo">Zonas Frías: ¿están relegando a Córdoba o cambió el mapa de prioridades del país?</h3>
+        <p class="resumen">La disputa por la continuidad del régimen de subsidios de gas para las denominadas Zonas Frías se ha convertido en un eje de confrontación política entre el gobierno de Córdoba y la Nación. El gobernador Martín Llaryora lidera el reclamo provincial en defensa de este beneficio para los usuarios locales. El conflicto de fondo expone las tensiones estructurales derivadas del cambio de modelo económico y la redefinición de las prioridades de asistencia fiscal.</p>
+        <a class="leer" href="https://www.lavoz.com.ar/politica/llaryora-subsidios-zonas-frias-discriminacion_0_G42iSrxtTC.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/06/14/Nlc38832d_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Quién es Roberto Vannacci, &quot;Il Generale&quot; que complica los planes políticos de la premier italiana Giorgia Meloni</h3>
+        <p class="resumen">El ascenso político del general retirado Roberto Vannacci y su plataforma conservadora introduce un escenario de incertidumbre para la primera ministra italiana, Giorgia Meloni. El crecimiento electoral de este sector amenaza con fracturar la coalición de centroderecha que sostiene al actual gobierno en Roma. Analistas europeos advierten que esta emergencia de liderazgos nacionalistas condicionará el debate político de cara a los comicios generales de 2027.</p>
+        <a class="leer" href="https://www.clarin.com/mundo/roberto-vannacci-il-generale-complica-planes-politicos-premier-italiana-giorgia-meloni_0_4r193lBMnx.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+    </div>
+
+    <div class="editorial">
+      <div class="marbete"><h4>La mirada del editor</h4></div>
+      <p>La agenda pública contemporánea exhibe una profunda tensión entre la reconfiguración de las reglas de juego institucionales y la fragilidad de los consensos políticos. A nivel nacional, la flexibilización de los criterios de selección para la Corte Suprema y el debilitamiento de la Jefatura de Gabinete en el Congreso exponen las dificultades del oficialismo para consolidar su gobernabilidad sin apelar a la discrecionalidad o enfrentar el control legislativo. En el plano provincial, Córdoba se convierte en un laboratorio de estas disputas, donde la administración local debe equilibrar las demandas de transparencia administrativa con la defensa de sus recursos frente al ajuste fiscal de la Nación. Finalmente, el histórico acuerdo entre Estados Unidos e Irán y el avance de nuevas doctrinas de defensa en Europa demuestran que la redefinición del orden global exige a los Estados nacionales una solidez institucional que la política doméstica argentina aún lucha por estructurar.</p>
+    </div>
+
+    <footer>
+      <span class="orn">&#10086; &#9884; &#10086;</span>
+      Mercurio · diario personal generado automáticamente · lunes, 15 de junio de 2026<br/>
+      Fuentes: La Voz · Infobae · Clarín · La Nación &nbsp;—&nbsp; Resúmenes por IA (Gemini)
+    </footer>
+  </div>
+</body>
+</html>

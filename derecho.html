@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Foro · Derecho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --papel:#f0ece0; --papel2:#e8e2d2; --tinta:#1b1b18; --burdeos:#5e1622;
+    --oro:#8a7335; --gris:#5a5448; --linea:#c7bda4;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:#ded6c2; color:var(--tinta);
+    font-family:'Spectral',Georgia,serif; font-size:18px; line-height:1.62; }
+  .pliego{ max-width:920px; margin:18px auto; background:var(--papel);
+    border:1px solid var(--burdeos); box-shadow:0 0 0 7px var(--papel), 0 0 0 8px var(--linea), 0 16px 44px rgba(0,0,0,.32);
+    padding:34px 40px 56px; }
+  /* ---- Cabecera ---- */
+  .cab{ text-align:center; border-bottom:3px double var(--tinta); padding-bottom:16px; margin-bottom:8px; }
+  .cab .top{ font-family:'Libre Baskerville',serif; font-size:11px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--gris); border-bottom:1px solid var(--linea); padding-bottom:8px; margin-bottom:12px; }
+  .cab h1{ font-family:'Libre Baskerville',serif; font-weight:700; font-size:clamp(40px,9vw,72px);
+    margin:6px 0 4px; letter-spacing:2px; }
+  .cab .balanza{ color:var(--burdeos); font-size:24px; margin:2px 0; }
+  .cab .sub{ font-style:italic; color:var(--gris); font-size:15px; }
+  .cab .maxima{ font-family:'Libre Baskerville',serif; font-size:12px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--burdeos); margin-top:6px; }
+  /* ---- Etiquetas de bloque ---- */
+  .etiqueta{ font-family:'Libre Baskerville',serif; font-weight:700; font-size:13px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--burdeos); margin:0 0 12px; padding-bottom:7px;
+    border-bottom:2px solid var(--tinta); }
+  .fuente-linea{ font-family:'Libre Baskerville',serif; font-size:10.5px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--gris); }
+  .meta-linea{ display:flex; align-items:center; gap:8px; margin-bottom:2px; }
+  .pais{ display:inline-block; font-family:'Libre Baskerville',serif; font-size:10px; letter-spacing:1.5px;
+    text-transform:uppercase; color:#fff; background:var(--burdeos); border-radius:2px; padding:2px 9px; }
+  .leer{ font-family:'Libre Baskerville',serif; font-size:10.5px; letter-spacing:1px; text-transform:uppercase;
+    color:var(--burdeos); text-decoration:none; }
+  .leer:hover{ text-decoration:underline; }
+  /* ---- El fallo comentado ---- */
+  .fallo{ margin:30px 0; padding:26px 28px; background:var(--papel2);
+    border:1px solid var(--linea); box-shadow:inset 0 0 0 1px var(--papel); }
+  .fallo-foto{ width:100%; height:230px; background-size:cover; background-position:center;
+    border:1px solid var(--linea); filter:grayscale(.35) sepia(.12); margin:4px 0 14px; }
+  .fallo-titulo{ font-family:'Libre Baskerville',serif; font-weight:700; line-height:1.18;
+    font-size:clamp(26px,3.6vw,40px); margin:6px 0 14px; }
+  .fallo-texto{ font-size:19px; margin:0 0 16px; text-align:justify; }
+  .fallo-texto::first-letter{ float:left; font-family:'Libre Baskerville',serif; font-weight:700;
+    font-size:58px; line-height:44px; padding:4px 12px 0 0; color:var(--burdeos); }
+  /* ---- Doctrina ---- */
+  .doctrina{ margin:34px 0; }
+  .doctrina-titulo{ font-family:'Libre Baskerville',serif; font-weight:700; font-size:26px;
+    line-height:1.2; margin:5px 0 12px; }
+  .doctrina-texto{ font-size:18px; text-align:justify; margin:0 0 12px; }
+  /* ---- Novedades ---- */
+  .novedades{ margin:34px 0; }
+  .lista-novedades{ list-style:none; margin:0; padding:0; }
+  .novedad{ border-top:1px solid var(--linea); padding:16px 0; }
+  .novedad:first-child{ border-top:none; }
+  .novedad-cab{ display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .novedad-cab .marca{ color:var(--burdeos); font-weight:700; }
+  .novedad-titulo{ display:block; font-family:'Libre Baskerville',serif; font-weight:700;
+    font-size:21px; line-height:1.25; color:var(--tinta); text-decoration:none; margin-bottom:6px; }
+  .novedad-titulo:hover{ color:var(--burdeos); }
+  .novedad-texto{ margin:0; font-size:17px; color:#2b2620; }
+  /* ---- Concepto del día ---- */
+  .concepto{ margin:36px 0; background:var(--tinta); color:var(--papel);
+    padding:24px 28px; border-left:6px solid var(--burdeos); }
+  .concepto-cab{ font-family:'Libre Baskerville',serif; font-size:11px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--oro); margin-bottom:10px; }
+  .concepto-titulo{ font-family:'Libre Baskerville',serif; font-weight:700; font-size:25px;
+    margin:0 0 10px; color:#fff; }
+  .concepto-texto{ margin:0; font-size:18px; line-height:1.6; color:#e9e3d4; text-align:justify; }
+  /* ---- Nota del editor ---- */
+  .editor{ margin-top:36px; border-top:3px double var(--tinta); padding-top:18px;
+    font-style:italic; font-size:18px; text-align:justify; color:#2b2620; }
+  .editor b{ font-style:normal; font-family:'Libre Baskerville',serif; font-size:12px;
+    letter-spacing:2px; text-transform:uppercase; color:var(--burdeos); display:block; margin-bottom:8px; }
+  /* ---- Pie ---- */
+  footer{ margin-top:40px; text-align:center; font-family:'Libre Baskerville',serif; font-size:10.5px;
+    letter-spacing:1.5px; text-transform:uppercase; color:var(--gris);
+    border-top:1px solid var(--linea); padding-top:16px; }
+  @media (max-width:680px){ .pliego{ padding:22px 18px 40px; } .fallo{ padding:18px; } }
+</style>
+</head>
+<body>
+  <div class="pliego">
+    <header class="cab">
+      <div class="top">Mercurio &nbsp;·&nbsp; Sección Jurídica &nbsp;·&nbsp; lunes, 15 de junio de 2026</div>
+      <h1>Foro</h1>
+      <div class="balanza">&#9878;</div>
+      <div class="sub">Derecho · doctrina, jurisprudencia y formación</div>
+      <div class="maxima">Fiat iustitia</div>
+    </header>
+
+    
+  <section class="fallo">
+    <div class="etiqueta">&#9878; El fallo comentado</div>
+    <div class="fallo-foto" style="background-image:url('https://www.infobae.com/resizer/v2/HRKAKF4C7ZCJRMO3AGISRU4BPI.jpg?auth=c6de8f5c238ece4e3668a5b89c70a9b66669a806a7b806d91124535bb0dd9030&amp;smart=true&amp;width=770&amp;height=433')"></div>
+    <div class="meta-linea"><span class="pais">Argentina</span><span class="fuente-linea">Infobae Judiciales</span></div>
+    <h2 class="fallo-titulo">Cuatro financistas vinculados a Lázaro Báez en la Ruta del Dinero K accedieron a una probation y evitarán el juicio</h2>
+    <p class="fallo-texto">La Cámara Federal de Casación Penal de la República Argentina ha concedido el beneficio de la probation (suspensión del juicio a prueba) a cuatro financistas vinculados a la resonante causa de lavado de activos conocida como &#39;La Ruta del Dinero K&#39;. Los imputados, que habían colaborado con el arrepentido Leonardo Fariña para canalizar fondos de origen espurio provenientes de la obra pública hacia el exterior, evitarán así el juicio oral y público. Para acceder a este instituto, la jurisprudencia exige el cumplimiento de estrictos requisitos, tales como el ofrecimiento de reparación del daño en la medida de las posibilidades y la realización de tareas comunitarias. El razonamiento del tribunal de alzada se centra en la viabilidad de aplicar la suspensión del proceso a prueba en delitos de lavado cuando se cumplen los mínimos de pena previstos y no se trata de funcionarios públicos en ejercicio. Esta resolución genera un debate profundo sobre la eficacia de las salidas alternativas en la persecución de la delincuencia económica compleja. La lección jurídica fundamental radica en que la probation no constituye un perdón liso y llano, sino un mecanismo de simplificación procesal condicionado al estricto cumplimiento de pautas de conducta que, de verse frustradas, reanudan el trámite penal ordinario.</p>
+    <a class="leer" href="https://www.infobae.com/judiciales/2026/06/14/cuatro-financistas-vinculados-a-lazaro-baez-en-la-ruta-del-dinero-k-accedieron-a-una-probation-y-evitaran-el-juicio/" target="_blank" rel="noopener">Leer la fuente &#8594;</a>
+  </section>
+    
+  <aside class="concepto">
+    <div class="concepto-cab">&#182; Concepto jurídico del día</div>
+    <h4 class="concepto-titulo">Suspensión del juicio a prueba (Probation)</h4>
+    <p class="concepto-texto">La suspensión del juicio a prueba, conocida técnicamente en el ámbito anglosajón y latinoamericano como probation, es un instituto de derecho procesal penal que permite suspender el desarrollo del proceso penal a cambio del cumplimiento de determinadas condiciones impuestas por el juez durante un plazo fijado. Si el imputado cumple con las reglas de conducta, repara el daño en la medida de lo posible y no comete nuevos delitos, la acción penal se extingue sin dejar antecedentes condenatorios. Este mecanismo busca la resocialización rápida del imputado en delitos de bagatela o de gravedad media, evitando el estigma y el costo de un juicio oral. Por ejemplo, si una persona es procesada por un hurto menor sin antecedentes penales, el juez puede suspender el juicio por un año bajo la condición de que realice trabajos comunitarios en un hospital público y repare económicamente a la víctima; si cumple satisfactoriamente, la causa se archiva definitivamente.</p>
+  </aside>
+    
+  <section class="doctrina">
+    <div class="etiqueta">&#167; Doctrina</div>
+    <div class="meta-linea"><span class="pais">España</span><span class="fuente-linea">Almacén de Derecho</span></div>
+    <h3 class="doctrina-titulo">¿Están legitimados los acreedores para proponer un plan de reestructuración?</h3>
+    <p class="doctrina-texto">La catedrática Nuria Bermejo aborda un debate crucial en el derecho concursal contemporáneo: la legitimación de los acreedores para proponer planes de reestructuración preconcursal. La autora explica que, a diferencia de otros sistemas, la legislación española no regula con detalle la iniciativa en la propuesta, lo cual responde deliberadamente al modelo de preconcursalidad adoptado. Los acreedores ostentan un papel activo y de control, pero la configuración del plan requiere un delicado equilibrio para evitar comportamientos oportunistas que destruyan el valor de la empresa viable. La tesis central sostiene que la falta de una regulación minuciosa de la iniciativa no es una laguna, sino una opción de diseño normativo que confiere flexibilidad a las negociaciones multilaterales. Este análisis resulta de vital importancia para comprender cómo el derecho de la insolvencia moderno busca la conservación de la empresa mediante la autonomía de la voluntad de las partes involucradas.</p>
+    <a class="leer" href="https://almacendederecho.org/estan-legitimados-los-acreedores-para-proponer-un-plan-de-reestructuracion" target="_blank" rel="noopener">Leer la pieza completa &#8594;</a>
+  </section>
+    
+  <section class="novedades">
+    <div class="etiqueta">Novedades jurídicas</div>
+    <ul class="lista-novedades">
+      <li class="novedad">
+        <div class="novedad-cab"><span class="marca">&#167;</span><span class="pais">Argentina</span><span class="fuente-linea">Infobae Judiciales</span></div>
+        <a class="novedad-titulo" href="https://www.infobae.com/judiciales/2026/06/13/un-financista-investigado-en-la-causa-de-las-sira-detallo-que-exfuncionarios-participaban-de-las-maniobras-y-dijo-que-alberto-fernandez-sabia-todo/" target="_blank" rel="noopener">Un financista investigado en la causa de las SIRA detalló qué exfuncionarios participaban de las maniobras y dijo que Alberto Fernández sabía todo</a>
+        <p class="novedad-texto">En Argentina, la declaración del financista Francisco Hauque en la causa de las SIRA aporta pruebas documentales y registros de retiros que comprometen a exfuncionarios en un esquema de desvío de divisas durante el cepo cambiario. El testimonio apunta directamente al conocimiento de las maniobras por parte de las más altas esferas del anterior Poder Ejecutivo Nacional.</p>
+      </li>
+      <li class="novedad">
+        <div class="novedad-cab"><span class="marca">&#167;</span><span class="pais">España</span><span class="fuente-linea">Legal Today</span></div>
+        <a class="novedad-titulo" href="https://www.legaltoday.com/practica-juridica/derecho-penal/un-juzgado-de-terrassa-condena-al-propietario-de-una-empresa-por-la-muerte-de-un-camionero-que-sufrio-un-accidente-por-el-mal-estado-de-las-ruedas-2026-06-12/" target="_blank" rel="noopener">Un juzgado de Terrassa condena al propietario de una empresa por la muerte de un camionero que sufrió un accidente por el mal estado de las ruedas</a>
+        <p class="novedad-texto">Un juzgado penal de Terrassa, España, ha condenado a dos años y medio de prisión al propietario de una empresa de transportes por homicidio imprudente tras la muerte de un camionero. El tribunal determinó la responsabilidad penal directa del empleador al probarse que el accidente fue causado por el desgaste extremo e ilegal de los neumáticos del vehículo.</p>
+      </li>
+      <li class="novedad">
+        <div class="novedad-cab"><span class="marca">&#167;</span><span class="pais">España</span><span class="fuente-linea">Confilegal</span></div>
+        <a class="novedad-titulo" href="https://confilegal.com/20260615-italia-ia-policial-reconocimiento-facial-ai-act/" target="_blank" rel="noopener">Italia se atreve con lo que nadie había osado: reconocimiento facial policial con IA</a>
+        <p class="novedad-texto">Italia se convierte en el primer país de la Unión Europea en regular e implementar de forma concreta el reconocimiento facial policial mediante inteligencia artificial. La normativa nacional instrumentaliza las excepciones de seguridad previstas en la AI Act europea, estableciendo un precedente de alto impacto para la privacidad y el derecho procesal penal.</p>
+      </li></ul>
+  </section>
+
+    <div class="editor">
+      <b>Nota del editor</b>
+      La presente selección de jurisprudencia y doctrina demuestra que el derecho penal y el derecho de la insolvencia se encuentran en constante redefinición frente a las exigencias de eficiencia y control de la criminalidad económica. La concesión de la probation en grandes causas de corrupción en Argentina nos obliga a reflexionar sobre los límites éticos y prácticos de las salidas alternativas al proceso penal. Como editores y académicos, recordamos que las instituciones procesales deben aplicarse con el máximo rigor técnico para evitar que la simplificación procesal se traduzca en impunidad.
+    </div>
+
+    <footer>
+      Foro · sección jurídica de Mercurio · lunes, 15 de junio de 2026<br/>
+      Fuentes: Almacén de Derecho · Confilegal · Legal Today · Infobae Judiciales · Comercio y Justicia
+    </footer>
+  </div>
+</body>
+</html>

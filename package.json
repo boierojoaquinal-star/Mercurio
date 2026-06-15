@@ -1,0 +1,13 @@
+{
+  "name": "diario",
+  "version": "1.0.0",
+  "description": "Mi diario personal automatizado con IA",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "diario": "node generar-diario.mjs"
+  },
+  "dependencies": {
+    "rss-parser": "^3.13.0"
+  }
+}

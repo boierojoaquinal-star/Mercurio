@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mercurio — diario personal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:#1a1713; font-family:'Playfair Display',Georgia,serif; }
+  .mx-nav{ position:sticky; top:0; z-index:1000; display:flex; align-items:center; gap:4px; flex-wrap:wrap; background:#1a1713; border-bottom:2px solid #9c7a37; padding:10px 18px; }
+  .mx-nav .mx-logo{ font-family:'Playfair Display',serif; font-weight:900; font-size:20px; letter-spacing:2px; color:#e8b86d; text-transform:uppercase; margin-right:14px; }
+  .mx-nav a{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#cdbf9f; text-decoration:none; padding:6px 12px; }
+  .mx-nav a:hover{ color:#1a1713; background:#e8b86d; }
+  .seccion{ scroll-margin-top:54px; }
+  #portada{ scroll-margin-top:54px; background:#f6f2e9; color:#1a1713; text-align:center; padding:72px 24px 80px; border-bottom:4px double #1a1713; }
+  #portada .kick{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:4px; text-transform:uppercase; color:#857c6b; }
+  #portada h1{ font-family:'Playfair Display',serif; font-weight:900; font-size:clamp(64px,16vw,140px); letter-spacing:2px; margin:8px 0 4px; line-height:1; }
+  #portada .pf-filete{ display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 14px; }
+  #portada .pf-filete::before,#portada .pf-filete::after{ content:""; border-top:3px double #1a1713; width:min(200px,30%); }
+  #portada .pf-filete span{ color:#9c7a37; font-size:22px; }
+  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 28px; }
+  .mx-cards{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
+  .mx-card{ font-family:'Space Grotesk',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#1a1713; text-decoration:none; border:1px solid #1a1713; padding:12px 22px; }
+  .mx-card:hover{ background:#1a1713; color:#f6f2e9; }
+  #portada .baja{ font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#857c6b; margin-top:34px; }
+  
+  .seccion{
+    --tinta:#1a1713; --papel:#f6f2e9; --crema:#ece4d0; --rojo:#8a1f1f; --oro:#9c7a37;
+    --gris:#857c6b; --linea:#d6cdb8;
+    background:var(--crema); color:var(--tinta);
+    font-family:'Spectral',Georgia,serif; font-size:18px; line-height:1.62; padding:34px 18px 50px;
+  }
+  .seccion *{ box-sizing:border-box; }
+  .seccion .hoja,.seccion .pliego,.seccion .marco{
+    max-width:1000px; margin:0 auto; background:var(--papel);
+    border:1px solid var(--linea); box-shadow:0 0 0 7px var(--papel),0 0 0 8px var(--linea),0 14px 40px rgba(0,0,0,.16);
+    padding:34px 40px 52px;
+  }
+  /* Cabeceras / mastheads de cada sección */
+  .seccion .top,.seccion .cabecera-top,.seccion .kicker-row{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--gris); border-bottom:1px solid var(--linea); padding-bottom:8px; margin-bottom:6px;
+  }
+  .seccion h1,.seccion .cab,.seccion .nameplate{
+    font-family:'Playfair Display',serif !important; font-weight:900; text-align:center; color:var(--tinta) !important;
+    font-size:clamp(40px,8vw,66px); letter-spacing:1px; margin:8px 0 4px; line-height:1;
+  }
+  .seccion .lema,.seccion .sub,.seccion .maxima,.seccion .intro{
+    text-align:center; font-style:italic; color:var(--gris); margin:0 auto 12px; font-family:'Spectral',serif; font-size:16px;
+  }
+  .seccion .balanza,.seccion .filete{ text-align:center; color:var(--rojo); }
+  .seccion .filete{ display:flex; align-items:center; justify-content:center; gap:14px; margin:8px 0; }
+  .seccion .filete::before,.seccion .filete::after{ content:""; border-top:3px double var(--tinta); width:min(150px,28%); }
+  .seccion .filete span{ color:var(--oro); }
+  /* Títulos de bloque / sección / etiquetas */
+  .seccion .seccion-tit,.seccion .seccion-titulo{ display:flex; align-items:center; gap:14px; margin:30px 0 18px; }
+  .seccion .seccion-tit h2,.seccion .seccion-titulo h2,.seccion .seccion-titulo h3{
+    font-family:'Playfair Display',serif; font-size:clamp(18px,3vw,24px); letter-spacing:2px; text-transform:uppercase; margin:0; white-space:nowrap; color:var(--tinta);
+  }
+  .seccion .seccion-tit .raya,.seccion .seccion-titulo .raya{ flex:1; height:2px; background:var(--tinta); }
+  .seccion .seccion-titulo::before,.seccion .seccion-titulo::after{ content:""; flex:1; border-top:3px double var(--linea); }
+  .seccion .et,.seccion .etiqueta,.seccion .bloque-tit,.seccion .concepto-cab{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--rojo); border-bottom:1px solid var(--linea); padding-bottom:6px; margin:0 0 12px;
+  }
+  /* Fuentes / regiones / país */
+  .seccion .fuente,.seccion .src,.seccion .fuente-linea{
+    font-family:'Space Grotesk',sans-serif; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--rojo); font-weight:600;
+  }
+  .seccion .region,.seccion .pais{
+    display:inline-block; background:var(--rojo); color:#f6f2e9; font-family:'Space Grotesk',sans-serif;
+    font-size:10px; letter-spacing:1.5px; text-transform:uppercase; padding:2px 9px;
+  }
+  .seccion .metas,.seccion .meta-linea{ display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .seccion .meta{ font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--gris); margin-bottom:10px; }
+  /* Nota principal y grilla */
+  .seccion .lead{ display:grid; grid-template-columns:1.1fr 1fr; gap:26px; align-items:center; border-top:3px double var(--tinta); padding-top:22px; margin-bottom:26px; }
+  .seccion .lead-titulo{ font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(28px,3.6vw,42px); line-height:1.1; margin:6px 0 12px; }
+  .seccion .grilla{ display:grid; grid-template-columns:1fr 1fr; gap:30px;
+    background:linear-gradient(var(--linea),var(--linea)) no-repeat; background-size:1px calc(100% - 20px); background-position:center 10px; }
+  .seccion .titulo{ font-family:'Playfair Display',serif; font-weight:700; font-size:24px; line-height:1.16; margin:5px 0 9px; }
+  .seccion .resumen{ font-size:16.5px; margin:0 0 10px; color:#3a342a; }
+  .seccion .foto{ width:100%; height:200px; background-size:cover; background-position:center; border:1px solid var(--linea); }
+  .seccion .foto-lead{ height:240px; }
+  .seccion .fallo-foto{ width:100%; height:230px; background-size:cover; background-position:center; border:1px solid var(--linea); margin:6px 0 14px; }
+  .seccion .nota .foto{ margin-bottom:10px; }
+  .seccion .sin-foto,.seccion .sin-img{ display:flex; align-items:center; justify-content:center; background:#6b5436 !important;
+    color:#f6f2e9; font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase; min-height:160px; text-align:center; padding:16px; }
+  .seccion .leer{ font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--rojo); text-decoration:none; font-weight:600; }
+  .seccion .leer:hover{ text-decoration:underline; }
+  /* Economía: indicadores y gráficos */
+  .seccion .bloque{ margin-bottom:18px; }
+  .seccion .indic{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--linea); border:1px solid var(--linea); }
+  .seccion .ind{ background:var(--papel); padding:11px 10px; }
+  .seccion .ind .l{ font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:.5px; text-transform:uppercase; color:var(--gris); }
+  .seccion .ind .v{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; margin-top:4px; }
+  .seccion .chg{ font-size:12px; } .seccion .chg.up{ color:#0f6e56; } .seccion .chg.down{ color:var(--rojo); } .seccion .chg.flat{ color:var(--gris); }
+  .seccion .alerta{ font-family:'Space Grotesk',sans-serif; font-size:10px; color:var(--rojo); margin-top:3px; }
+  .seccion .data-nota{ text-align:right; font-family:'Space Grotesk',sans-serif; font-size:10px; color:var(--gris); margin:6px 0 18px; }
+  .seccion .graficos{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:8px 0 24px; }
+  .seccion .grafico{ background:#fbf7ed; border:1px solid var(--linea); padding:14px; }
+  .seccion .grafico h4{ font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); margin:0 0 10px; }
+  .seccion .grafico .lienzo{ position:relative; height:240px; }
+  /* Derecho: fallo, doctrina, novedades, concepto */
+  .seccion .fallo{ margin:26px 0; padding:24px 26px; background:#efe7d3; border:1px solid var(--linea); }
+  .seccion .fallo-titulo{ font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(26px,3.4vw,38px); line-height:1.16; margin:6px 0 14px; }
+  .seccion .fallo-texto,.seccion .doctrina-texto,.seccion .texto{ font-size:18px; text-align:justify; margin:0 0 14px; }
+  .seccion .fallo-texto::first-letter,.seccion .texto::first-letter{ float:left; font-family:'Playfair Display',serif; font-weight:700; font-size:54px; line-height:42px; padding:4px 12px 0 0; color:var(--rojo); }
+  .seccion .doctrina{ margin:30px 0; } .seccion .doctrina-titulo{ font-family:'Playfair Display',serif; font-weight:700; font-size:26px; line-height:1.2; margin:5px 0 12px; }
+  .seccion .lista-novedades{ list-style:none; margin:0; padding:0; }
+  .seccion .novedad{ border-top:1px solid var(--linea); padding:15px 0; } .seccion .novedad:first-child{ border-top:none; }
+  .seccion .novedad-cab{ display:flex; align-items:center; gap:8px; margin-bottom:4px; } .seccion .marca{ color:var(--rojo); font-weight:700; }
+  .seccion .novedad-titulo,.seccion .nota-tit{ display:block; font-family:'Playfair Display',serif; font-weight:700; font-size:21px; line-height:1.22; color:var(--tinta); text-decoration:none; margin:3px 0 6px; }
+  .seccion .novedad-titulo:hover,.seccion .nota-tit:hover{ color:var(--rojo); }
+  .seccion .novedad-texto,.seccion .nota-txt{ margin:0; font-size:16px; color:#3a342a; }
+  .seccion .concepto{ margin:30px 0; background:var(--tinta); color:var(--papel); padding:22px 26px; border-left:6px solid var(--rojo); }
+  .seccion .concepto-cab{ color:#e8b86d; border:none; padding:0; }
+  .seccion .concepto-titulo{ font-family:'Playfair Display',serif; font-weight:700; font-size:24px; margin:6px 0 10px; color:#fff; }
+  .seccion .concepto-texto{ margin:0; font-size:17px; color:#e9e3d4; text-align:justify; }
+  /* Arte: obras, álbum/película, noticias */
+  .seccion .obra{ margin-bottom:44px; } .seccion .obra-num{ font-family:'Playfair Display',serif; font-style:italic; font-size:20px; color:var(--rojo); margin-bottom:8px; }
+  .seccion .obra-img{ display:block; width:100%; max-height:540px; object-fit:contain; background:#2a2420; border:1px solid var(--linea); }
+  .seccion .obra-tit,.seccion .cult-tit{ font-family:'Playfair Display',serif; font-weight:700; font-size:28px; line-height:1.12; margin:12px 0 4px; }
+  .seccion .duo{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .seccion .cult-img{ display:block; width:100%; max-height:320px; object-fit:contain; background:#2a2420; border:1px solid var(--linea); margin-bottom:12px; }
+  .seccion .news{ list-style:none; margin:0; padding:0; }
+  .seccion .news .nota{ border-top:1px solid var(--linea); padding:15px 0; }
+  /* Cierres editoriales */
+  .seccion .editorial,.seccion .editor,.seccion .analisis{
+    margin-top:32px; background:#efe7d3; border-left:5px solid var(--rojo); padding:22px 26px;
+    font-style:italic; font-size:18px; text-align:justify; color:#332b22;
+  }
+  .seccion .editorial b,.seccion .editor b,.seccion .analisis b,.seccion .editorial h4{
+    font-style:normal; font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--rojo); display:block; margin-bottom:8px;
+  }
+  .seccion footer{ margin-top:40px; text-align:center; font-family:'Space Grotesk',sans-serif; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); border-top:1px solid var(--linea); padding-top:16px; }
+  @media (max-width:680px){
+    .seccion .lead,.seccion .grilla,.seccion .graficos,.seccion .duo{ grid-template-columns:1fr; }
+    .seccion .grilla{ background:none; } .seccion .indic{ grid-template-columns:repeat(2,1fr); }
+  }
+
+</style>
+</head>
+<body>
+  <nav class="mx-nav"><span class="mx-logo">Mercurio</span><a href="#portada">Portada</a><a href="#sec-argentina">Argentina</a><a href="#sec-foro">Foro</a><a href="#sec-mercado">Mercado</a><a href="#sec-salon">Salón</a><a href="#sec-atlas">Atlas</a></nav>
+  <header id="portada">
+    <div class="kick">Edición de la noche · lunes, 15 de junio de 2026</div>
+    <h1>Mercurio</h1>
+    <div class="pf-filete"><span>&#9884;</span></div>
+    <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, arte y el mundo.</div>
+    <div class="mx-cards"><a class="mx-card" href="#sec-argentina">Argentina</a><a class="mx-card" href="#sec-foro">Foro</a><a class="mx-card" href="#sec-mercado">Mercado</a><a class="mx-card" href="#sec-salon">Salón</a><a class="mx-card" href="#sec-atlas">Atlas</a></div>
+    <div class="baja">&#8595; Entrá, o elegí una sección arriba</div>
+  </header>
+  <section id="sec-argentina" class="seccion">
+  <div class="marco">
+    <header class="masthead">
+      <div class="kicker-row">
+        <span>Córdoba · Argentina</span>
+        <span class="orn">&#10086;</span>
+        <span>Edición de la mañana</span>
+        <span class="orn">&#10086;</span>
+        <span>Año MMXXVI · N.º 166</span>
+      </div>
+      <h1 class="nameplate">Mercurio</h1>
+      <div class="filete"><span>&#9884;</span></div>
+      <div class="lema">Crónica del día · ediciones de mañana y noche</div>
+      <div class="lema" style="font-style:normal;letter-spacing:1px;">lunes, 15 de junio de 2026</div>
+    </header>
+
+    <div class="seccion-titulo"><h3>Córdoba y Argentina</h3></div>
+
+    
+  <article class="lead">
+    <div class="lead-foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/WG5OQ22GMFGQFJZBZQQR3TJAGU.jpg?auth=17d1b657a0f8926a4968581e0e1b269bf7bce2339d0b2e230943a72c930e9ff8&amp;smart=true&amp;width=428&amp;height=321')"></div>
+    <div class="lead-cuerpo">
+      <span class="fuente">La Nación</span>
+      <h2 class="lead-titulo">Por decreto, el Gobierno flexibiliza los requisitos para la designación de jueces de la Corte Suprema</h2>
+      <p class="lead-resumen">El Poder Ejecutivo Nacional modificó mediante un decreto de necesidad y urgencia las exigencias para el nombramiento de los magistrados del máximo tribunal de justicia. La nueva normativa suprime las directrices de paridad de género, especialización y equilibrio geográfico que regían los procesos de selección anteriores. Esta medida busca agilizar la cobertura de las vacantes actuales bajo un esquema de mayor discrecionalidad política.</p>
+      <a class="leer" href="https://www.lanacion.com.ar/politica/por-decreto-el-gobierno-flexibiliza-los-requisitos-para-la-designacion-de-jueces-de-la-corte-suprema-nid15062026/" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+    </div>
+  </article>
+
+    <div class="grilla">
+      
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/03/27/0FUSMLCn5_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Pakistán anunció que Estados Unidos e Irán llegaron a un acuerdo y que se firmará el viernes: Trump ordenó abrir el estrecho de Ormuz</h3>
+        <p class="resumen">El gobierno de Pakistán anunció formalmente la concreción de un acuerdo de paz histórico entre Estados Unidos e Irán, cuya firma se ratificará en territorio suizo. El presidente Donald Trump confirmó el entendimiento y ordenó la reapertura del estratégico estrecho de Ormuz para el tránsito marítimo internacional. Desde Teherán aseguraron que este pacto bilateral implica el cese inmediato de las hostilidades bélicas en la región de Medio Oriente.</p>
+        <a class="leer" href="https://www.clarin.com/mundo/pakistan-anuncio-listo-acuerdo-estados-unidos-iran_0_st0De3SfHF.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/EKJLZ5IYO5GRVOTBWWML3XQHCY.JPEG?auth=53583fdf58c03abacf01fdf695dcd781d9df4c278d92cf30f96bce153ea95c3a&amp;smart=true&amp;width=1367&amp;height=1025')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Nación</span>
+        <h3 class="titulo">Senado: la oposición dialoguista le quita su respaldo y la continuidad de Adorni pende de un hilo</h3>
+        <p class="resumen">La permanencia de Manuel Adorni en la Jefatura de Gabinete se encuentra en una situación crítica debido al retiro del respaldo de los bloques legislativos dialoguistas en el Senado. Las negociaciones de último momento impulsadas por el oficialismo no han logrado contener el descontento de la oposición moderada de cara a la sesión de esta semana. Se proyecta que el cuerpo legislativo avance con una moción de censura que compromete la estabilidad del funcionario.</p>
+        <a class="leer" href="https://www.lanacion.com.ar/politica/senado-la-oposicion-dialoguista-le-quita-su-respaldo-y-la-continuidad-de-adorni-pende-de-un-hilo-nid14062026/" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.infobae.com/resizer/v2/DV2HNPDQZ5ANDJW3M2UWPPAJ7I.jpg?auth=efcffa1bd71ef7a7bfb10764301d91058475afb33944186cb5bbbb6f2085d3fb&amp;smart=true&amp;width=1920&amp;height=1080')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Infobae</span>
+        <h3 class="titulo">Las inconsistencias, agregados y rectificaciones con las que Adorni intentó justificar el aumento de sus bienes y nivel de gastos</h3>
+        <p class="resumen">Una auditoría sobre las declaraciones juradas del jefe de Gabinete reveló inconsistencias significativas y rectificaciones de último momento ante la Oficina Anticorrupción. La investigación patrimonial detectó transferencias de activos digitales superiores a los cien mil dólares durante el ejercicio de la función pública en 2024. El funcionario se enfrenta ahora a la exigencia legal de justificar el origen de los fondos en efectivo y la evolución de sus bienes.</p>
+        <a class="leer" href="https://www.infobae.com/politica/2026/06/14/las-inconsistencias-agregados-y-rectificaciones-con-las-que-adorni-intento-justificar-el-aumento-de-sus-bienes-y-nivel-de-gastos/" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('http://www.lavoz.com.ar/images/2026/03/20/o6IsBfuTSX_1200x675.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Voz</span>
+        <h3 class="titulo">Llaryora designará a ganadores de 200 concursos que estaban congelados</h3>
+        <p class="resumen">El gobernador de Córdoba, Martín Llaryora, efectivizará la designación de los ganadores de doscientos concursos públicos que permanecían congelados desde la gestión de Juan Schiaretti en 2022. La medida surge como una respuesta política directa a la controversia social y legislativa por los criterios de contratación estatal en la provincia. No obstante, la administración central ratificó su postura de no incrementar la planta permanente de la administración pública.</p>
+        <a class="leer" href="https://www.lavoz.com.ar/politica/llaryora-designara-ganadores-200-concursos-congelados_0_t7vxqsjdeP.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2024/04/06/yX4ylE9YJ_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Hay 150 impuestos en la Argentina: más de la mitad son municipales y solo 6 explican el 85% de la recaudación</h3>
+        <p class="resumen">Un relevamiento sobre la estructura tributaria argentina determinó la coexistencia de ciento cincuenta gravámenes activos, de los cuales más de la mitad corresponden a tasas de jurisdicción municipal. A pesar de una leve reducción en los impuestos de carácter nacional, las provincias y los municipios mantuvieron o incrementaron su presión fiscal. El informe destaca que apenas seis tributos concentran el ochenta y cinco por ciento de la recaudación consolidada del país.</p>
+        <a class="leer" href="https://www.clarin.com/economia/150-impuestos-argentina-mitad-municipales-solo-6-explican-85-recaudacion_0_Mqd5npAGMB.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/06/14/vmAX76fUI_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Ucrania denuncia que Rusia construye nuevas bases aéreas en sitios clave de sus fronteras para atacar Europa</h3>
+        <p class="resumen">El presidente de Ucrania, Volodimir Zelenski, alertó sobre la edificación de nuevas bases aéreas rusas en zonas limítrofes estratégicas orientadas hacia el territorio europeo. El mandatario denunció que el Kremlin consolidó una doctrina de confrontación geopolítica de largo plazo contra los sistemas democráticos occidentales. Países escandinavos como Noruega ya han iniciado tareas de monitoreo militar ante el despliegue de infraestructura militar en las fronteras.</p>
+        <a class="leer" href="https://www.clarin.com/mundo/ucrania-denuncia-rusia-construye-nuevas-bases-aereas-sitios-clave-fronteras-atacar-europa_0_gXLLBKz60P.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('http://www.lavoz.com.ar/images/2026/06/03/1ZNUWZIs7S_1200x675.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Voz</span>
+        <h3 class="titulo">Pedidos de Jury contra Garzón y Rodríguez: el oficialismo mide daños y diseña estrategia</h3>
+        <p class="resumen">La Comisión de Enjuiciamiento de Córdoba analiza tres pedidos de jury contra los fiscales Garzón y Rodríguez, lo que ha puesto en alerta al oficialismo provincial. El caso del fiscal Iván Rodríguez, recientemente nombrado en el ámbito penitenciario, representa el mayor desafío político para la administración de Llaryora. El gobierno de la provincia evalúa el impacto institucional de estas denuncias mientras define su estrategia de contención en el plano legislativo.</p>
+        <a class="leer" href="https://www.lavoz.com.ar/politica/pedidos-jury-garzon-rodriguez-oficialismo-mide-danos-disena-estrategia_0_KuxFma6MKD.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/06/14/uoxtBlAoT_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Murió Taty Almeida, presidenta de Madres de Plaza de Mayo Línea Fundadora</h3>
+        <p class="resumen">A los noventa y cinco años de edad, falleció Taty Almeida, presidenta de la Línea Fundadora de Madres de Plaza de Mayo y figura histórica de los derechos humanos en el país. Su deceso generó profundas muestras de pesar en todo el arco político nacional, destacando su trayectoria en la búsqueda de memoria, verdad y justicia. Sus restos serán despedidos en una ceremonia pública que congregará a referentes sociales, políticos y de la militancia civil.</p>
+        <a class="leer" href="https://www.clarin.com/politica/murio-taty-almeida-madre-plaza-mayo-linea-fundadora_0_JL1fX6tliv.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/04/17/1Iaou38MS_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Los cambios en la venta de tierras a extranjeros dilatan la ley de propiedad privada de Sturzenegger en el Congreso</h3>
+        <p class="resumen">El tratamiento legislativo del proyecto de ley de propiedad privada impulsado por Federico Sturzenegger sufrió postergaciones en el Senado de la Nación. Las discrepancias en torno a la flexibilización de los límites para la adquisición de tierras por parte de ciudadanos extranjeros motivaron la decisión del oficialismo de retirar la norma del temario. Las provincias exigen mantener facultades de control y autorización frente a las atribuciones que pretende centralizar el Estado nacional.</p>
+        <a class="leer" href="https://www.clarin.com/politica/cambios-venta-tierras-extranjeros-dilatan-ley-propiedad-privada-sturzenegger-congreso_0_6mIBSSY32r.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('http://www.lavoz.com.ar/images/2026/04/08/rpJy8m9EBo_1200x675.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">La Voz</span>
+        <h3 class="titulo">Zonas Frías: ¿están relegando a Córdoba o cambió el mapa de prioridades del país?</h3>
+        <p class="resumen">La disputa por la continuidad del régimen de subsidios de gas para las denominadas Zonas Frías se ha convertido en un eje de confrontación política entre el gobierno de Córdoba y la Nación. El gobernador Martín Llaryora lidera el reclamo provincial en defensa de este beneficio para los usuarios locales. El conflicto de fondo expone las tensiones estructurales derivadas del cambio de modelo económico y la redefinición de las prioridades de asistencia fiscal.</p>
+        <a class="leer" href="https://www.lavoz.com.ar/politica/llaryora-subsidios-zonas-frias-discriminacion_0_G42iSrxtTC.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://www.clarin.com/img/2026/06/14/Nlc38832d_1200x630__1.jpg')"></div>
+      <div class="cuerpo">
+        <span class="fuente">Clarín</span>
+        <h3 class="titulo">Quién es Roberto Vannacci, &quot;Il Generale&quot; que complica los planes políticos de la premier italiana Giorgia Meloni</h3>
+        <p class="resumen">El ascenso político del general retirado Roberto Vannacci y su plataforma conservadora introduce un escenario de incertidumbre para la primera ministra italiana, Giorgia Meloni. El crecimiento electoral de este sector amenaza con fracturar la coalición de centroderecha que sostiene al actual gobierno en Roma. Analistas europeos advierten que esta emergencia de liderazgos nacionalistas condicionará el debate político de cara a los comicios generales de 2027.</p>
+        <a class="leer" href="https://www.clarin.com/mundo/roberto-vannacci-il-generale-complica-planes-politicos-premier-italiana-giorgia-meloni_0_4r193lBMnx.html" target="_blank" rel="noopener">Leer la nota completa &#8594;</a>
+      </div>
+    </article>
+    </div>
+
+    <div class="editorial">
+      <div class="marbete"><h4>La mirada del editor</h4></div>
+      <p>La agenda pública contemporánea exhibe una profunda tensión entre la reconfiguración de las reglas de juego institucionales y la fragilidad de los consensos políticos. A nivel nacional, la flexibilización de los criterios de selección para la Corte Suprema y el debilitamiento de la Jefatura de Gabinete en el Congreso exponen las dificultades del oficialismo para consolidar su gobernabilidad sin apelar a la discrecionalidad o enfrentar el control legislativo. En el plano provincial, Córdoba se convierte en un laboratorio de estas disputas, donde la administración local debe equilibrar las demandas de transparencia administrativa con la defensa de sus recursos frente al ajuste fiscal de la Nación. Finalmente, el histórico acuerdo entre Estados Unidos e Irán y el avance de nuevas doctrinas de defensa en Europa demuestran que la redefinición del orden global exige a los Estados nacionales una solidez institucional que la política doméstica argentina aún lucha por estructurar.</p>
+    </div>
+
+    <footer>
+      <span class="orn">&#10086; &#9884; &#10086;</span>
+      Mercurio · diario personal generado automáticamente · lunes, 15 de junio de 2026<br/>
+      Fuentes: La Voz · Infobae · Clarín · La Nación &nbsp;—&nbsp; Resúmenes por IA (Gemini)
+    </footer>
+  </div>
+</section>
+<section id="sec-foro" class="seccion">
+  <div class="pliego">
+    <header class="cab">
+      <div class="top">Mercurio &nbsp;·&nbsp; Sección Jurídica &nbsp;·&nbsp; lunes, 15 de junio de 2026</div>
+      <h1>Foro</h1>
+      <div class="balanza">&#9878;</div>
+      <div class="sub">Derecho · doctrina, jurisprudencia y formación</div>
+      <div class="maxima">Fiat iustitia</div>
+    </header>
+
+    
+  <section class="fallo">
+    <div class="etiqueta">&#9878; El fallo comentado</div>
+    <div class="fallo-foto" style="background-image:url('https://www.infobae.com/resizer/v2/HRKAKF4C7ZCJRMO3AGISRU4BPI.jpg?auth=c6de8f5c238ece4e3668a5b89c70a9b66669a806a7b806d91124535bb0dd9030&amp;smart=true&amp;width=770&amp;height=433')"></div>
+    <div class="meta-linea"><span class="pais">Argentina</span><span class="fuente-linea">Infobae Judiciales</span></div>
+    <h2 class="fallo-titulo">Cuatro financistas vinculados a Lázaro Báez en la Ruta del Dinero K accedieron a una probation y evitarán el juicio</h2>
+    <p class="fallo-texto">La Cámara Federal de Casación Penal de la República Argentina ha concedido el beneficio de la probation (suspensión del juicio a prueba) a cuatro financistas vinculados a la resonante causa de lavado de activos conocida como &#39;La Ruta del Dinero K&#39;. Los imputados, que habían colaborado con el arrepentido Leonardo Fariña para canalizar fondos de origen espurio provenientes de la obra pública hacia el exterior, evitarán así el juicio oral y público. Para acceder a este instituto, la jurisprudencia exige el cumplimiento de estrictos requisitos, tales como el ofrecimiento de reparación del daño en la medida de las posibilidades y la realización de tareas comunitarias. El razonamiento del tribunal de alzada se centra en la viabilidad de aplicar la suspensión del proceso a prueba en delitos de lavado cuando se cumplen los mínimos de pena previstos y no se trata de funcionarios públicos en ejercicio. Esta resolución genera un debate profundo sobre la eficacia de las salidas alternativas en la persecución de la delincuencia económica compleja. La lección jurídica fundamental radica en que la probation no constituye un perdón liso y llano, sino un mecanismo de simplificación procesal condicionado al estricto cumplimiento de pautas de conducta que, de verse frustradas, reanudan el trámite penal ordinario.</p>
+    <a class="leer" href="https://www.infobae.com/judiciales/2026/06/14/cuatro-financistas-vinculados-a-lazaro-baez-en-la-ruta-del-dinero-k-accedieron-a-una-probation-y-evitaran-el-juicio/" target="_blank" rel="noopener">Leer la fuente &#8594;</a>
+  </section>
+    
+  <aside class="concepto">
+    <div class="concepto-cab">&#182; Concepto jurídico del día</div>
+    <h4 class="concepto-titulo">Suspensión del juicio a prueba (Probation)</h4>
+    <p class="concepto-texto">La suspensión del juicio a prueba, conocida técnicamente en el ámbito anglosajón y latinoamericano como probation, es un instituto de derecho procesal penal que permite suspender el desarrollo del proceso penal a cambio del cumplimiento de determinadas condiciones impuestas por el juez durante un plazo fijado. Si el imputado cumple con las reglas de conducta, repara el daño en la medida de lo posible y no comete nuevos delitos, la acción penal se extingue sin dejar antecedentes condenatorios. Este mecanismo busca la resocialización rápida del imputado en delitos de bagatela o de gravedad media, evitando el estigma y el costo de un juicio oral. Por ejemplo, si una persona es procesada por un hurto menor sin antecedentes penales, el juez puede suspender el juicio por un año bajo la condición de que realice trabajos comunitarios en un hospital público y repare económicamente a la víctima; si cumple satisfactoriamente, la causa se archiva definitivamente.</p>
+  </aside>
+    
+  <section class="doctrina">
+    <div class="etiqueta">&#167; Doctrina</div>
+    <div class="meta-linea"><span class="pais">España</span><span class="fuente-linea">Almacén de Derecho</span></div>
+    <h3 class="doctrina-titulo">¿Están legitimados los acreedores para proponer un plan de reestructuración?</h3>
+    <p class="doctrina-texto">La catedrática Nuria Bermejo aborda un debate crucial en el derecho concursal contemporáneo: la legitimación de los acreedores para proponer planes de reestructuración preconcursal. La autora explica que, a diferencia de otros sistemas, la legislación española no regula con detalle la iniciativa en la propuesta, lo cual responde deliberadamente al modelo de preconcursalidad adoptado. Los acreedores ostentan un papel activo y de control, pero la configuración del plan requiere un delicado equilibrio para evitar comportamientos oportunistas que destruyan el valor de la empresa viable. La tesis central sostiene que la falta de una regulación minuciosa de la iniciativa no es una laguna, sino una opción de diseño normativo que confiere flexibilidad a las negociaciones multilaterales. Este análisis resulta de vital importancia para comprender cómo el derecho de la insolvencia moderno busca la conservación de la empresa mediante la autonomía de la voluntad de las partes involucradas.</p>
+    <a class="leer" href="https://almacendederecho.org/estan-legitimados-los-acreedores-para-proponer-un-plan-de-reestructuracion" target="_blank" rel="noopener">Leer la pieza completa &#8594;</a>
+  </section>
+    
+  <section class="novedades">
+    <div class="etiqueta">Novedades jurídicas</div>
+    <ul class="lista-novedades">
+      <li class="novedad">
+        <div class="novedad-cab"><span class="marca">&#167;</span><span class="pais">Argentina</span><span class="fuente-linea">Infobae Judiciales</span></div>
+        <a class="novedad-titulo" href="https://www.infobae.com/judiciales/2026/06/13/un-financista-investigado-en-la-causa-de-las-sira-detallo-que-exfuncionarios-participaban-de-las-maniobras-y-dijo-que-alberto-fernandez-sabia-todo/" target="_blank" rel="noopener">Un financista investigado en la causa de las SIRA detalló qué exfuncionarios participaban de las maniobras y dijo que Alberto Fernández sabía todo</a>
+        <p class="novedad-texto">En Argentina, la declaración del financista Francisco Hauque en la causa de las SIRA aporta pruebas documentales y registros de retiros que comprometen a exfuncionarios en un esquema de desvío de divisas durante el cepo cambiario. El testimonio apunta directamente al conocimiento de las maniobras por parte de las más altas esferas del anterior Poder Ejecutivo Nacional.</p>
+      </li>
+      <li class="novedad">
+        <div class="novedad-cab"><span class="marca">&#167;</span><span class="pais">España</span><span class="fuente-linea">Legal Today</span></div>
+        <a class="novedad-titulo" href="https://www.legaltoday.com/practica-juridica/derecho-penal/un-juzgado-de-terrassa-condena-al-propietario-de-una-empresa-por-la-muerte-de-un-camionero-que-sufrio-un-accidente-por-el-mal-estado-de-las-ruedas-2026-06-12/" target="_blank" rel="noopener">Un juzgado de Terrassa condena al propietario de una empresa por la muerte de un camionero que sufrió un accidente por el mal estado de las ruedas</a>
+        <p class="novedad-texto">Un juzgado penal de Terrassa, España, ha condenado a dos años y medio de prisión al propietario de una empresa de transportes por homicidio imprudente tras la muerte de un camionero. El tribunal determinó la responsabilidad penal directa del empleador al probarse que el accidente fue causado por el desgaste extremo e ilegal de los neumáticos del vehículo.</p>
+      </li>
+      <li class="novedad">
+        <div class="novedad-cab"><span class="marca">&#167;</span><span class="pais">España</span><span class="fuente-linea">Confilegal</span></div>
+        <a class="novedad-titulo" href="https://confilegal.com/20260615-italia-ia-policial-reconocimiento-facial-ai-act/" target="_blank" rel="noopener">Italia se atreve con lo que nadie había osado: reconocimiento facial policial con IA</a>
+        <p class="novedad-texto">Italia se convierte en el primer país de la Unión Europea en regular e implementar de forma concreta el reconocimiento facial policial mediante inteligencia artificial. La normativa nacional instrumentaliza las excepciones de seguridad previstas en la AI Act europea, estableciendo un precedente de alto impacto para la privacidad y el derecho procesal penal.</p>
+      </li></ul>
+  </section>
+
+    <div class="editor">
+      <b>Nota del editor</b>
+      La presente selección de jurisprudencia y doctrina demuestra que el derecho penal y el derecho de la insolvencia se encuentran en constante redefinición frente a las exigencias de eficiencia y control de la criminalidad económica. La concesión de la probation en grandes causas de corrupción en Argentina nos obliga a reflexionar sobre los límites éticos y prácticos de las salidas alternativas al proceso penal. Como editores y académicos, recordamos que las instituciones procesales deben aplicarse con el máximo rigor técnico para evitar que la simplificación procesal se traduzca en impunidad.
+    </div>
+
+    <footer>
+      Foro · sección jurídica de Mercurio · lunes, 15 de junio de 2026<br/>
+      Fuentes: Almacén de Derecho · Confilegal · Legal Today · Infobae Judiciales · Comercio y Justicia
+    </footer>
+  </div>
+</section>
+<section id="sec-mercado" class="seccion">
+  <div class="hoja">
+    <div class="top"><span>Economía · Argentina y el mundo</span><span>lunes, 15 de junio de 2026</span></div>
+    <h1 class="cab">Mercado</h1>
+    <div class="lema">El tablero económico del día</div>
+
+    <section class="bloque"><h3 class="bloque-tit">I · Costo del capital y liquidez global</h3><div class="indic"><div class="ind"><div class="l">Curva 2a/10a (EE.UU.)</div><div class="v">+0,39 pp <span class="chg down">▼ 0,01</span></div></div><div class="ind"><div class="l">Índice dólar (DXY)</div><div class="v">99,53 <span class="chg down">▼ 0,42%</span></div></div><div class="ind"><div class="l">Credit spreads (HY)</div><div class="v">2,78% <span class="chg down">▼ 0,02</span></div></div></div></section><section class="bloque"><h3 class="bloque-tit">II · Economía real y materias primas</h3><div class="indic"><div class="ind"><div class="l">Petróleo Brent</div><div class="v">US$ 82,6 <span class="chg down">▼ 11,28%</span></div></div><div class="ind"><div class="l">Petróleo WTI</div><div class="v">US$ 79,93 <span class="chg down">▼ 11,22%</span></div></div><div class="ind"><div class="l">Cobre</div><div class="v">US$ 6,498 <span class="chg up">▲ 3,98%</span></div></div><div class="ind"><div class="l">Oro</div><div class="v">US$ 4.377 <span class="chg up">▲ 6,55%</span></div></div></div></section><section class="bloque"><h3 class="bloque-tit">III · Sentimiento de mercado</h3><div class="indic"><div class="ind"><div class="l">VIX (índice del miedo)</div><div class="v">16,3 <span class="chg down">▼ 17,97%</span></div></div><div class="ind"><div class="l">S&amp;P 500</div><div class="v">7.551 <span class="chg up">▲ 1,96%</span></div></div><div class="ind"><div class="l">MSCI Emergentes</div><div class="v">69,62 <span class="chg up">▲ 5,89%</span></div></div><div class="ind"><div class="l">Breakeven inflación 10a</div><div class="v">2,31% <span class="chg up">▲ 0,02</span></div></div></div></section><section class="bloque"><h3 class="bloque-tit">IV · Argentina — riesgo y distorsión local</h3><div class="indic"><div class="ind"><div class="l">Dólar oficial</div><div class="v">$1.450</div></div><div class="ind"><div class="l">Dólar blue</div><div class="v">$1.460</div></div><div class="ind"><div class="l">Dólar MEP</div><div class="v">$1.452</div></div><div class="ind"><div class="l">Contado c/liqui</div><div class="v">$1.496</div></div><div class="ind"><div class="l">Brecha (CCL/oficial)</div><div class="v">3,1%</div></div><div class="ind"><div class="l">Riesgo país (EMBI)</div><div class="v">437 <span class="chg down">▼ 6</span></div></div><div class="ind"><div class="l">Inflación mensual</div><div class="v">2,1%</div></div></div></section>
+
+    <div class="data-nota">Datos en vivo: dolarapi.com · argentinadatos.com · Yahoo Finance · FRED (Reserva Federal de St. Louis)</div>
+
+    <div class="graficos">
+      <div class="grafico"><h4>Variación de hoy (%)</h4><div class="lienzo"><canvas id="chartGlobal"></canvas></div></div>
+      <div class="grafico"><h4>Riesgo país — últimos 3 meses</h4><div class="lienzo"><canvas id="chartRiesgo"></canvas></div></div>
+    </div>
+
+    <div class="seccion-tit"><h2>Noticias económicas</h2><div class="raya"></div></div>
+    <article class="lead"><div class="foto foto-lead" style="background-image:url('https://www.infobae.com/resizer/v2/FCBBQF3GYJGYHA7POL4BHQNS24.JPG?auth=349d47505e7b20ba7b5346c1326406945870f8fa51fa182b85cf0959decabfb5&amp;smart=true&amp;width=5288&amp;height=3525')"></div><div class="cuerpo"><span class="src">Infobae</span><h3 class="lead-titulo">Mercados: el riesgo país argentino vuelve a caer y toca un nuevo mínimo en más de ocho años</h3><p class="resumen">El riesgo país de la Argentina experimentó un marcado retroceso hasta ubicarse en los 425 puntos básicos, alcanzando su nivel más bajo desde abril de 2018. Esta compresión de spreads soberanos se dio en el marco de una fuerte valorización de los bonos globales en dólares, que registraron alzas promedio del 1%. La performance de los activos locales se alineó con un clima de marcado optimismo en las plazas financieras internacionales.</p><a class="leer" href="https://www.infobae.com/economia/2026/06/15/mercados-el-riesgo-pais-argentino-vuelve-a-caer-y-toca-un-nuevo-minimo-en-mas-de-ocho-anos/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+    <div class="grilla"><article class="nota"><div class="foto" style="background-image:url('https://www.infobae.com/resizer/v2/LTD2BGZRD5CMFG6POVNJ3KRYJU.JPG?auth=87ae48f142f17ea86edbc3c63f0f65312580a0da7f1a13548beeb384bf3d8b70&amp;smart=true&amp;width=4976&amp;height=3389')"></div><div class="cuerpo"><span class="src">Infobae</span><h3 class="titulo">Euforia en los mercados tras el acuerdo entre EEUU e Irán: cae el petróleo y las bolsas se disparan</h3><p class="resumen">Los mercados globales reaccionaron con un marcado optimismo tras el anuncio de un acuerdo estratégico entre Estados Unidos e Irán. El precio del petróleo de referencia Brent experimentó una caída del 5%, situándose en torno a los 83 dólares por barril. En paralelo, las principales bolsas europeas y los futuros de Wall Street registraron alzas generalizadas ante la perspectiva de una distensión geopolítica.</p><a class="leer" href="https://www.infobae.com/america/mundo/2026/06/15/euforia-en-los-mercados-tras-el-acuerdo-entre-eeuu-e-iran-el-petroleo-se-desploma-y-las-bolsas-se-disparan/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/IWRPDZTESVGRHHIWZEI7KX4DMQ.jpg?auth=6cc743f1f6b7f772bb7cb5f8f0509878b2e25a69a848b8077ee4de51ce696566&amp;smart=true&amp;width=1040&amp;height=691')"></div><div class="cuerpo"><span class="src">La Nación</span><h3 class="titulo">Juan Carlos de Pablo explicó por qué la economía argentina podría enfrentar una “enfermedad holandesa”</h3><p class="resumen">El economista Juan Carlos de Pablo advirtió sobre la posibilidad de que la economía argentina enfrente un escenario de &#39;enfermedad holandesa&#39;. Según su análisis, el fuerte ingreso de divisas proyectado por los sectores agropecuario y energético podría generar una apreciación cambiaria real significativa. Este fenómeno plantea el desafío de gestionar una eventual abundancia de moneda extranjera sin desincentivar la competitividad de la industria local.</p><a class="leer" href="https://www.lanacion.com.ar/economia/juan-carlos-de-pablo-explico-por-que-la-economia-argentina-podria-enfrentar-una-enfermedad-holandesa-nid14062026/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://www.clarin.com/img/2024/04/06/yX4ylE9YJ_1200x630__1.jpg')"></div><div class="cuerpo"><span class="src">Clarín</span><h3 class="titulo">Hay 150 impuestos en la Argentina: más de la mitad son municipales y solo 6 explican el 85% de la recaudación</h3><p class="resumen">Un informe impositivo reveló que en la Argentina coexisten 150 tributos vigentes, evidenciando la alta complejidad del sistema fiscal. A pesar de una reducción de cinco gravámenes a nivel nacional en el último año, las tasas municipales y provinciales mantuvieron su peso relativo. La recaudación efectiva continúa altamente concentrada, dado que apenas seis impuestos explican el 85% de los ingresos totales del Estado.</p><a class="leer" href="https://www.clarin.com/economia/150-impuestos-argentina-mitad-municipales-solo-6-explican-85-recaudacion_0_Mqd5npAGMB.html" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://www.infobae.com/resizer/v2/5A2IUR2QXZBTRENKZW7VXU7LZM.JPG?auth=936ddd31035d18318b33311fca4040bb4faf016d215d03d3fcb5ecd40f5aabcd&amp;smart=true&amp;width=5900&amp;height=3933')"></div><div class="cuerpo"><span class="src">Infobae</span><h3 class="titulo">Dólar y actividad: la debilidad importadora ayudó a las compras del Banco Central</h3><p class="resumen">La persistente debilidad en el nivel de actividad de la industria manufacturera local ha moderado la demanda de divisas para importaciones en el mercado de cambios. Esta menor tracción importadora, combinada con un superávit energético creciente, facilitó la acumulación de reservas internacionales por parte del Banco Central. El comportamiento del sector externo refleja así el impacto de la recesión sobre la balanza de pagos.</p><a class="leer" href="https://www.infobae.com/economia/2026/06/15/dolar-y-actividad-la-debilidad-importadora-ayudo-a-las-compras-del-banco-central/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://www.infobae.com/resizer/v2/6L75NFZCC5A2DILZDJ2BFIW3EM.png?auth=1926aea8c2a64116d719981efa91702305a91c2985cf49664c76b8b6a0846b09&amp;smart=true&amp;width=1280&amp;height=700')"></div><div class="cuerpo"><span class="src">Infobae</span><h3 class="titulo">Con precios internos a la baja, la salida de Brasil del mercado europeo de carne abre una oportunidad para la Argentina</h3><p class="resumen">La suspensión temporal de Brasil en el mercado de carne de la Unión Europea por razones sanitarias abre una ventana de oportunidad comercial para la ganadería argentina. La sanción podría desviar exportaciones brasileñas estimadas en hasta 1.800 millones de dólares hacia otros competidores de la región. Exportadores locales proyectan un incremento sustancial en los despachos del segundo semestre si se consolida este escenario.</p><a class="leer" href="https://www.infobae.com/economia/2026/06/15/con-precios-internos-a-la-baja-la-salida-de-brasil-del-mercado-europeo-de-carne-abre-una-oportunidad-para-la-argentina/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://www.clarin.com/img/2025/08/12/3WSniSrH6_1200x630__1.jpg')"></div><div class="cuerpo"><span class="src">Clarín</span><h3 class="titulo">SanCor sale a la venta y ya tiene precio de base: la Justicia pide más de US$ 50 millones por la láctea quebrada</h3><p class="resumen">La Justicia comercial dispuso la apertura del proceso de licitación para la venta de los activos remanentes de la quebrada cooperativa láctea SanCor. El pliego judicial establece un valor base de 50 millones de dólares que incluye las seis plantas de producción y la cartera de marcas de la firma. En la primera ronda informativa se registraron seis grupos empresarios interesados en participar de la compulsa.</p><a class="leer" href="https://www.clarin.com/rural/sancor-sale-venta-precio-base-justicia-pide-us-50-millones-lactea-quebrada_0_pNhGK0snZE.html" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://www.infobae.com/resizer/v2/XUIZC3MHDVDVHHRK3W7EJ5BWCI.png?auth=b63ec9847e24e2130c1c7a1df520eb1cb434b0844926ba5a1e2c8f9ed9852a55&amp;smart=true&amp;width=1408&amp;height=768')"></div><div class="cuerpo"><span class="src">Infobae</span><h3 class="titulo">Presencia de marca y ciclos de producción: por qué un grupo mexicano compra el mayor exportador de dulce de leche de la Argentina</h3><p class="resumen">El grupo empresario mexicano MIYM se encuentra en negociaciones avanzadas para adquirir la firma láctea San Ignacio, principal exportadora de dulce de leche del país. La operación se alinea con la estrategia de expansión del holding azteca, que ya ha concretado la compra de otras dos pymes del sector alimenticio en la Argentina. La transacción resalta el atractivo de los activos locales con inserción exportadora a pesar de la coyuntura macroeconómica.</p><a class="leer" href="https://www.infobae.com/economia/2026/06/15/presencia-de-marca-y-ciclos-de-produccion-por-que-un-grupo-mexicano-compra-el-mayor-exportador-de-dulce-de-leche-de-la-argentina/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article>
+<article class="nota"><div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/ALWLV2OR4JAZNPK67Y2UKDAWVY.JPG?auth=d14ef298f20f6d107e34d8038f58b1f5035ec13e7f168d422eee6d00c6778fa2&amp;smart=true&amp;width=2000&amp;height=1333')"></div><div class="cuerpo"><span class="src">La Nación</span><h3 class="titulo">El Gobierno ratifica que cumplirá su meta de subsidios a la energía con mayores tarifas para los usuarios</h3><p class="resumen">La Secretaría de Energía ratificó que mantendrá inalterada la meta de gasto en subsidios energéticos fijada en el 0,5% del PBI para el presente ejercicio. Desde el Palacio de Hacienda atribuyeron el incremento del gasto observado en el primer cuatrimestre a factores estacionales y ajustes contables transitorios. Para consolidar el sendero fiscal oficial, el Gobierno prevé aplicar nuevos esquemas de actualización tarifaria sobre los usuarios residenciales.</p><a class="leer" href="https://www.lanacion.com.ar/economia/el-gobierno-ratifica-que-cumplira-su-meta-de-subsidios-a-la-energia-con-mayores-tarifas-para-los-nid14062026/" target="_blank" rel="noopener">Leer la nota &#8594;</a></div></article></div>
+
+    <div class="editorial"><b>La mirada del editor</b>La coyuntura macroeconómica argentina exhibe una marcada dualidad que define las decisiones de portafolio y la planificación corporativa. Por un lado, la fuerte compresión del riesgo país a mínimos de ocho años, impulsada por un contexto global favorable y la disciplina fiscal, convalida el sendero de saneamiento financiero del Banco Central. Sin embargo, la contracara de esta estabilización financiera es una recesión que deprime las importaciones y erosiona el empleo formal. El debate de mediano plazo se desplaza ahora hacia la sostenibilidad del esquema cambiario, donde la eventual abundancia de divisas energéticas y agrícolas exigirá una sintonía fina extrema para evitar distorsiones de competitividad en el entramado productivo.</div>
+    <footer>Mercado · sección economía de Mercurio · lunes, 15 de junio de 2026<br/>Datos: dolarapi · argentinadatos · Yahoo Finance · FRED · Noticias y resúmenes por IA</footer>
+  </div>
+  
+  
+</section>
+<section id="sec-salon" class="seccion">
+  <div class="hoja">
+    <div class="top"><span>Arte y cultura · histórica y contemporánea</span><span>lunes, 15 de junio de 2026</span></div>
+    <h1 class="cab">Salón</h1>
+    <div class="intro">Qué alegría encontrarnos una vez más en este rincón de contemplación, querido amigo, para nutrir el espíritu en este templado quince de junio. Hoy preparé una selección exquisita y poco transitada que, le aseguro, transformará por completo su manera de mirar el mundo.</div>
+
+    <div class="seccion-tit"><h2>Las obras del día</h2><div class="raya"></div></div>
+    
+  <article class="obra">
+    <div class="obra-num">1</div>
+    <img class="obra-img" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Giorgione_-_Das_Gewitter.jpg" alt="La tempestad" loading="lazy" />
+    <div class="obra-cuerpo">
+      <h3 class="obra-tit">La tempestad</h3>
+      <div class="meta">Giorgione · 1508 · Renacimiento Veneciano · Galería de la Academia, Venecia</div>
+      <p class="texto">Nos hallamos ante uno de los mayores enigmas de la historia del arte occidental, pintado por el misterioso Giorgione en los albores del siglo XVI. A diferencia de sus contemporáneos florentinos, obsesionados con el dibujo ríspido, este maestro veneciano priorizó la atmósfera y el color para sugerir una emoción. La escena nos muestra a un soldado y a una mujer amamantando, pero nadie ha logrado descifrar con certeza qué historia bíblica o mitológica representa. Lo verdaderamente revolucionario aquí es que el paisaje ya no es un simple fondo, sino el protagonista absoluto que unifica la composición con su luz tormentosa. Al contemplarla, preste atención a cómo el rayo en el cielo parece electrificar el aire húmedo, anticipando el Romanticismo por casi tres siglos.</p>
+    </div>
+  </article>
+
+  <article class="obra">
+    <div class="obra-num">2</div>
+    <div class="obra-img sin-img">El taller de la tejedora de alfombras</div>
+    <div class="obra-cuerpo">
+      <h3 class="obra-tit">El taller de la tejedora de alfombras</h3>
+      <div class="meta">Baya Mahieddine · 1948 · Arte Moderno Argelino (Surrealismo) · Colección privada</div>
+      <p class="texto">Déjese cautivar por la vibrante cosmogonía de Baya Mahieddine, una artista argelina que deslumbró al mismísimo Picasso y a los surrealistas en el París de posguerra cuando apenas tenía dieciséis años. Huérfana desde la infancia y autodidacta, Baya volcó en sus lienzos una resistencia cultural bellísima frente al colonialismo francés, fusionando el arte folclórico magrebí con una paleta de colores desbordante. Esta obra nos sumerge en un universo femenino de simetrías audaces, donde las figuras no respetan las leyes de la perspectiva occidental. El uso del azul cobalto y los patrones ornamentales crean un ritmo musical que prescinde de las sombras para celebrar la vida pura. Observe cómo los rostros de sus mujeres, de perfil pero con ojos frontales, desafían la mirada del espectador con una dignidad poética inquebrantable.</p>
+    </div>
+  </article>
+
+  <article class="obra">
+    <div class="obra-num">3</div>
+    <div class="obra-img sin-img">El imperio de las luces</div>
+    <div class="obra-cuerpo">
+      <h3 class="obra-tit">El imperio de las luces</h3>
+      <div class="meta">René Magritte · 1954 · Surrealismo · Museos Reales de Bellas Artes de Bélgica</div>
+      <p class="texto">El maestro belga René Magritte tenía la asombrosa capacidad de hacernos dudar de la realidad utilizando elementos cotidianos con una precisión casi fotográfica. En esta obra cumbre, nos presenta un paisaje nocturno donde una solitaria farola ilumina una callejuela oscura, pero al alzar la vista nos topamos con un cielo diurno, radiante y salpicado de nubes esponjosas. Esta paradoja visual, donde el día y la noche coexisten en perfecta armonía, produce una profunda sensación de extrañamiento y misterio existencial. Magritte no buscaba pintar fantasías delirantes, sino revelar el misterio oculto en lo que consideramos normal. Fíjese en cómo el reflejo del agua duplica la oscuridad, obligando a nuestra mente a reconciliar dos verdades contradictorias en un solo instante.</p>
+    </div>
+  </article>
+
+    <div class="seccion-tit"><h2>Para escuchar y ver</h2><div class="raya"></div></div>
+    <div class="duo">
+  <article class="cult">
+    <div class="et">Álbum del día</div>
+    <div class="cult-img sin-img">The Black Saint and the Sinner Lady</div>
+    <h3 class="cult-tit">The Black Saint and the Sinner Lady</h3>
+    <div class="meta">Charles Mingus · 1963 · Avant-garde Jazz</div>
+    <p class="texto">Nos adentramos en una de las catedrales sonoras del siglo XX, concebida por el volcánico contrabajista y compositor Charles Mingus como una suite de ballet en seis movimientos. Grabado en un momento de extrema turbulencia social y lucha por los derechos civiles en Estados Unidos, este álbum es un torrente de pasión, dolor y redención. Mingus combinó la improvisación del jazz con la estructura de la música clásica y el desgarro del blues, logrando una densidad orquestal que eriza la piel. Es fundamental que escuche el diálogo entre el saxo alto de Charlie Mariano y la guitarra flamenca de Jay Berliner, una audacia estilística inaudita para la época. Déjese llevar por los cambios bruscos de tempo; sentirá cómo la música respira, ruge y llora como si fuera un organismo vivo.</p>
+  </article>
+  <article class="cult">
+    <div class="et">Película del día</div>
+    <div class="cult-img sin-img">El espíritu de la colmena</div>
+    <h3 class="cult-tit">El espíritu de la colmena</h3>
+    <div class="meta">Víctor Erice · 1973</div>
+    <p class="texto">En las postrimerías de la dictadura franquista, el director español Víctor Erice filmó esta obra de arte absoluta, utilizando la sutileza y la metáfora para evadir la censura de la época. La historia sigue a Ana, una niña de seis años que queda fascinada tras ver la película de Frankenstein en su pequeño pueblo de la meseta castellana en 1940. A través de la mirada inocente de la pequeña, Erice retrata el silencio asfixiante, el trauma de la posguerra y la soledad de una familia rota por el dolor invisible. La fotografía de Luis Cuadrado es un milagro visual, donde los interiores de la casa están bañados en tonos dorados que emulan la luz dentro de una colmena de abejas. Preste especial atención a los silencios y a la soberbia actuación natural de la niña Ana Torrent; allí reside la verdadera poesía del cine.</p>
+  </article></div>
+
+    <div class="seccion-tit"><h2>Noticias de cultura</h2><div class="raya"></div></div>
+    <ul class="news"><li class="nota"><span class="fuente">Infobae Cultura</span><a class="nota-tit" href="https://www.infobae.com/cultura/2026/06/15/una-muestra-con-el-arte-como-respuesta-a-la-ultima-dictadura-argentina/" target="_blank" rel="noopener">Una muestra con el arte como respuesta a la última dictadura argentina</a><p class="nota-txt">La exposición &quot;La memoria de la colección&quot; indaga en las huellas de la violencia política en la producción artística argentina a medio siglo del golpe militar. A través de piezas históricas, la muestra propone una profunda reflexión estética sobre la dictadura.</p></li><li class="nota"><span class="fuente">Infobae Cultura</span><a class="nota-tit" href="https://www.infobae.com/cultura/2026/06/15/todo-borges-nos-dice-que-la-literatura-nunca-es-un-catecismo-alberto-manguel-en-ginebra-a-40-anos-de-la-muerte-del-escritor/" target="_blank" rel="noopener">“Todo Borges nos dice que la literatura nunca es un catecismo”: Alberto Manguel en Ginebra, a 40 años de la muerte del escritor</a><p class="nota-txt">En el marco del cuadragésimo aniversario del fallecimiento de Jorge Luis Borges, el escritor Alberto Manguel ofreció una destacada disertación en Ginebra. Durante el encuentro, se analizó la vigencia del autor de &quot;El Aleph&quot; y su concepción de la literatura como un espacio ajeno a los dogmatismos.</p></li><li class="nota"><span class="fuente">The Art Newspaper</span><a class="nota-tit" href="https://www.theartnewspaper.com/2026/06/15/the-art-world-honours-david-hockney-who-flew-the-flag-higher-than-any-other-british-artist" target="_blank" rel="noopener">The art world honours David Hockney, ‘who flew the flag higher than any other British artist’</a><p class="nota-txt">El ámbito de las artes visuales despide al célebre pintor David Hockney, fallecido a los 88 años de edad. Diversas personalidades de la cultura británica rindieron tributo a su figura, destacándolo como uno de los máximos referentes del arte contemporáneo.</p></li><li class="nota"><span class="fuente">Infobae Cultura</span><a class="nota-tit" href="https://www.infobae.com/cultura/2026/06/15/valeria-luiselli-y-su-nueva-y-esperada-novela-cada-vez-que-se-cuenta-el-pasado-se-esta-reescribiendo-el-presente/" target="_blank" rel="noopener">Valeria Luiselli y su nueva y esperada novela: “Cada vez que se cuenta el pasado, se está reescribiendo el presente”</a><p class="nota-txt">La escritora mexicana Valeria Luiselli presenta su nueva novela &quot;Principio, medio, fin&quot;, una obra que explora los lazos míticos y familiares en Sicilia. A partir del viaje de sus protagonistas, la autora reflexiona sobre cómo la reinterpretación del pasado reconfigura el presente.</p></li><li class="nota"><span class="fuente">Ñ (Clarín)</span><a class="nota-tit" href="https://www.clarin.com/cultura/corona-paises-bajos-abre-debate-restitucion-piezas-origen-colonial_0_U83n9ziLhU.html" target="_blank" rel="noopener">La corona de Países Bajos abre el debate sobre la restitución de piezas de origen colonial</a><p class="nota-txt">Una investigación independiente en los Países Bajos ha encendido el debate sobre el origen de las piezas de la colección real procedentes de antiguas colonias. El informe advierte que diversos objetos patrimoniales de Indonesia y el Caribe podrían haber sido obtenidos mediante el saqueo o la violencia.</p></li></ul>
+
+    <footer>Salón · sección arte y cultura de Mercurio · lunes, 15 de junio de 2026<br/>Curaduría por IA · imágenes: Wikimedia Commons · noticias: La Nación, Ñ, Infobae, The Art Newspaper, El País</footer>
+  </div>
+</section>
+<section id="sec-atlas" class="seccion">
+  <div class="hoja">
+    <div class="top"><span>El mundo, en profundidad</span><span>lunes, 15 de junio de 2026</span></div>
+    <h1 class="cab">Atlas</h1>
+    <div class="filete"><span>&#9737;</span></div>
+    <div class="lema">Geopolítica y grandes temas globales</div>
+    
+    <article class="lead">
+      <div class="foto foto-lead" style="background-image:url('https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/6d37/live/87d20340-6861-11f1-a6ec-e194b1c99f11.jpg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Medio Oriente</span><span class="src">BBC Mundo</span></div>
+        <h3 class="lead-titulo">EE.UU. e Irán anuncian un acuerdo para poner fin a la guerra y reabrir el estrecho de Ormuz</h3>
+        <p class="resumen">Estados Unidos e Irán han anunciado un acuerdo marco para poner fin a casi cuatro meses de conflicto en Medio Oriente. El pacto, mediado por Pakistán, se firmará oficialmente en Suiza y contempla la reapertura del estratégico estrecho de Ormuz. Ambos gobiernos se han adjudicado la victoria en el conflicto, aunque los detalles específicos y la implementación aún generan incertidumbre.</p>
+        <a class="leer" href="https://www.bbc.com/mundo/articles/cgev1y580ydo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+    <div class="grilla">
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/LBU634NHMFGVDBW6JNUD2PHIZI.JPG?auth=49abfdc73d7739eff4817317ffd1137d683fbe2cefbfc8f885fc18d50580aebc&amp;smart=true&amp;width=2400&amp;height=1600')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Global</span><span class="src">La Nación</span></div>
+        <h3 class="titulo">Trump llega a Francia para una cumbre del G7 marcada por el acuerdo con Irán, el estrecho de Ormuz y la guerra en Ucrania</h3>
+        <p class="resumen">El presidente estadounidense, Donald Trump, arribó a Ginebra para la cumbre del G7 en los Alpes franceses, donde el reciente acuerdo con Irán será un tema central. La reunión de líderes mundiales se enfocará en cuestiones geoestratégicas y económicas, incluyendo la reapertura del estrecho de Ormuz. La guerra en Ucrania y las tensiones previas de Trump con otros líderes también marcarán la agenda del encuentro.</p>
+        <a class="leer" href="https://www.lanacion.com.ar/el-mundo/trump-llega-a-francia-para-una-cumbre-del-g7-marcada-por-el-acuerdo-con-iran-el-estrecho-de-ormuz-y-nid15062026/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://s.france24.com/media/display/28898c9e-6868-11f1-b053-005056a90284/w:1024/p:16x9/ca62305c57d24b4f34b071a36a56cee6dbee051e.jpg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Europa</span><span class="src">France 24</span></div>
+        <h3 class="titulo">Rusia escala sus ataques: 11 muertos, decenas de heridos y un monasterio milenario destruido en Ucrania</h3>
+        <p class="resumen">Kiev fue epicentro del bombardeo más intenso del Ejército ruso en semanas, dejando al menos 11 muertos y 53 heridos en todo el territorio ucraniano. La conmoción se intensificó al conocerse la destrucción del histórico Monasterio de Las Cuevas, un símbolo de la historia y cultura del país. Este ataque representa una escalada significativa en la agresión rusa, impactando tanto vidas civiles como patrimonio cultural.</p>
+        <a class="leer" href="https://www.france24.com/es/europa/20260615-rusia-escala-sus-ataques-11-muertos-decenas-de-heridos-y-un-monasterio-milenario-destruido-en-ucrania" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/cae8/live/7fdb86c0-68a2-11f1-b1db-af71d47507d6.jpg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Europa</span><span class="src">BBC Mundo</span></div>
+        <h3 class="titulo">Reino Unido anuncia la prohibición de redes sociales para menores de 16 años</h3>
+        <p class="resumen">El gobierno del Reino Unido ha propuesto una ley que prohibiría el acceso a redes sociales a menores de 16 años, con entrada en vigor prevista para principios de 2027. La medida busca proteger a los niños en internet, posicionando al Reino Unido como uno de los países más estrictos en esta materia. Esta iniciativa refleja una creciente preocupación global por el impacto de las plataformas digitales en la juventud.</p>
+        <a class="leer" href="https://www.bbc.com/mundo/articles/c8e274x17n4o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://i.guim.co.uk/img/media/6dac1cfee0895baf98d046cb4ae8c69266ffb82e/342_0_1977_1582/master/1977.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=ced5a2717105c4621a0c661ef7f67441')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Global</span><span class="src">The Guardian</span></div>
+        <h3 class="titulo">Aumentan un 40% los ataques violentos contra escuelas, alumnos y personal en todo el mundo, según estudio</h3>
+        <p class="resumen">Un estudio revela un alarmante aumento del 40% en los ataques a la educación a nivel global, con más de 8.556 incidentes registrados en 83 países. Al menos 10.600 estudiantes y miembros del personal fueron asesinados, heridos, secuestrados o arrestados en 2024 y 2025. Esta escalada subraya la creciente vulnerabilidad de los entornos educativos en zonas de conflicto y crisis.</p>
+        <a class="leer" href="https://www.theguardian.com/global-development/2026/jun/15/global-attacks-killing-abductions-education-pupils-staff-up-40pc-gcpea-study" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/IHOOSF6YAZH3FGRSGBTPRIRDWE.png?auth=d554f07e777515258e6bb440a9f41bd1d501fa6b23a3373c4473b715f86edcf1&amp;smart=true&amp;width=2000&amp;height=1333')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">África</span><span class="src">La Nación</span></div>
+        <h3 class="titulo">Una muralla verde: el plan que tienen 11 países de África para frenar el avance del desierto del Sahara</h3>
+        <p class="resumen">Once países africanos impulsan un ambicioso proyecto para crear una &#39;Gran Muralla Verde&#39; que frene el avance del desierto del Sahara. El plan busca restaurar 100 millones de hectáreas de tierra para combatir la desertificación y mejorar la seguridad alimentaria. Sin embargo, tras casi dos décadas, el progreso es limitado debido a la corrupción y la falta de fondos, dificultando el cumplimiento de sus objetivos.</p>
+        <a class="leer" href="https://www.lanacion.com.ar/el-mundo/una-muralla-verde-el-plan-que-tienen-11-paises-de-africa-para-frenar-el-avance-del-desierto-del-nid15062026/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://resizer.glanacion.com/resizer/v2/OWJL6Q475FHB3CHB7NCAEAB4EM.jpeg?auth=d2f8d152f653fc2a6b04ce99676db4f9cb8ea89d68d09ac91e76ea23118facf9&amp;smart=true&amp;width=1600&amp;height=1066')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Global</span><span class="src">La Nación</span></div>
+        <h3 class="titulo">Artemis III: quiénes son los cuatro astronautas para la nueva misión de la NASA en 2027</h3>
+        <p class="resumen">La NASA ha confirmado a los cuatro astronautas que integrarán la tripulación de la misión Artemis III, programada para 2027. Esta misión es crucial para el regreso de los humanos a la Luna, poniendo a prueba tecnologías clave para futuras exploraciones espaciales. Entre los seleccionados se encuentra el astronauta de la Agencia Espacial Europea, Luca Parmitano, quien bromeó sobre la posibilidad de llevar comida italiana al espacio.</p>
+        <a class="leer" href="https://www.lanacion.com.ar/el-mundo/artemis-iii-quienes-son-los-cuatro-astronautas-para-la-nueva-mision-de-la-nasa-en-2027-nid14062026/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://imagenes.elpais.com/resizer/v2/BIO3VDZ2TBNPDLLGW7GAESNQMM.jpg?auth=c987ba5aad8923d0fbf917b454347e36cdaabc6d9dfada207ef4930826a3afea')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">América Latina</span><span class="src">El País</span></div>
+        <h3 class="titulo">Venezuela: esperando a María Corina</h3>
+        <p class="resumen">La líder opositora María Corina Machado sigue prometiendo su regreso a la contienda política venezolana, mientras el chavismo maniobra para mantener el control. Washington, por su parte, sigue su propia ruta diplomática, intentando influir en el proceso. Los venezolanos, en medio de la incertidumbre política, anhelan una mejora económica que aún no se materializa.</p>
+        <a class="leer" href="https://elpais.com/america/2026-06-15/venezuela-esperando-a-maria-corina.html" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://s.france24.com/media/display/00a01af6-6870-11f1-acbf-005056a97e36/w:1024/p:16x9/ES-20260614-203729-203905-CS.jpg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Europa</span><span class="src">France 24</span></div>
+        <h3 class="titulo">Suiza rechaza limitar su población a 10 millones de habitantes</h3>
+        <p class="resumen">Los ciudadanos suizos rechazaron, con más del 54% de los votos, una propuesta de la derecha para limitar la población del país a 10 millones de habitantes. Los promotores de la iniciativa argumentaban que era necesaria para reducir la presión sobre el transporte, la vivienda y el medio ambiente, problemas atribuidos al aumento poblacional. El resultado subraya la postura del electorado suizo frente a políticas migratorias restrictivas.</p>
+        <a class="leer" href="https://www.france24.com/es/video/20260615-suiza-rechaza-limitar-su-poblaci%C3%B3n-a-10-millones-de-habitantes" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://i.guim.co.uk/img/media/97d20e1d855d2a948da15f483274380ca7dc0917/100_0_1500_1200/master/1500.jpg?width=140&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=fc7f4bfad495babeee1b966591e686cd')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Asia</span><span class="src">The Guardian</span></div>
+        <h3 class="titulo">Terremoto mortal en Filipinas elevó el lecho marino hasta 2 metros</h3>
+        <p class="resumen">Un potente terremoto que causó al menos 61 muertes en Filipinas provocó un &#39;levantamiento costero&#39; que elevó el lecho marino hasta dos metros. Este fenómeno expuso corales y afectó la vida marina, alterando significativamente el ecosistema costero. Residentes locales reportaron que las líneas costeras se extendieron hasta 200 metros, evidenciando el drástico impacto geológico del sismo.</p>
+        <a class="leer" href="https://www.theguardian.com/world/2026/jun/14/philippines-earthquake-raised-seabed-costal-uplift-coral-exposed" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article></div>
+    <div class="analisis"><b>Análisis · el tablero global</b>El panorama geopolítico actual está dominado por el sorprendente acuerdo entre Estados Unidos e Irán, que promete poner fin a un conflicto prolongado y reabrir el vital estrecho de Ormuz. Este desarrollo no solo impacta la estabilidad de Medio Oriente y los mercados energéticos globales, sino que también establece el tono para la cumbre del G7, donde los líderes discutirán esta nueva dinámica junto con la persistente guerra en Ucrania. Mientras tanto, desafíos como el cambio climático en África y la protección de la infancia en la era digital en Europa, junto con la resiliencia de la democracia en América Latina, demuestran la complejidad y diversidad de la agenda global, donde la interconexión de los problemas exige una respuesta coordinada y multifacética.</div>
+    <footer>Atlas · sección internacional de Mercurio · lunes, 15 de junio de 2026<br/>Fuentes: BBC Mundo · El País · France 24 · The Guardian · La Nación · Resúmenes por IA</footer>
+  </div>
+</section>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+    const DG = {"labels":["S&P 500","Emergentes","Brent","Cobre","Oro","VIX","DXY"],"data":[1.96,5.89,-11.28,3.98,6.55,-17.97,-0.42]};
+    const DR = {"labels":["2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-25","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12"],"data":[502,507,506,514,519,519,511,515,524,519,537,545,545,554,572,567,573,534,546,575,583,555,552,568,584,601,587,610,602,633,600,603,595,583,615,637,617,612,612,609,611,610,570,557,553,528,525,527,518,519,526,533,532,549,557,582,584,573,567,539,558,554,514,522,510,496,511,523,525,538,543,547,524,516,514,514,508,500,494,493,490,488,492,486,499,494,498,503,443,437]};
+    if (window.Chart) {
+      Chart.defaults.font.family = "'Space Grotesk', sans-serif";
+      Chart.defaults.color = '#7a5c48';
+      new Chart(document.getElementById('chartGlobal'), {
+        type: 'bar',
+        data: { labels: DG.labels, datasets: [{ data: DG.data, backgroundColor: DG.data.map(v => v >= 0 ? '#0f6e56' : '#a32d2d') }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => v + '%' }, grid: { color: '#e3cdbb' } }, x: { grid: { display: false } } } }
+      });
+      new Chart(document.getElementById('chartRiesgo'), {
+        type: 'line',
+        data: { labels: DR.labels, datasets: [{ data: DR.data, borderColor: '#a32d2d', backgroundColor: 'rgba(163,45,45,.12)', fill: true, pointRadius: 0, borderWidth: 2, tension: .2 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { maxTicksLimit: 6 }, grid: { display: false } }, y: { grid: { color: '#e3cdbb' } } } }
+      });
+    }
+  </script>
+</body>
+</html>

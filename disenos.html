@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Direcciones de diseño — elegí una</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Space+Grotesk:wght@400;500;700&family=Spectral:ital,wght@0,400;0,500;1,400&family=Archivo:wght@500;700;800&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#33312c; font-family:'Spectral',Georgia,serif; }
+  .barra{ background:#1c1b18; color:#e8e0cd; text-align:center; padding:26px 16px; }
+  .barra h1{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; letter-spacing:1px; }
+  .barra p{ font-size:15px; color:#b3a988; margin-top:6px; }
+  .rotulo{ background:#26251f; color:#d9b96a; padding:12px 20px; font-family:'Space Grotesk',sans-serif;
+    font-weight:700; font-size:14px; letter-spacing:2px; text-transform:uppercase; }
+  .rotulo small{ display:block; color:#9a8f72; font-weight:400; letter-spacing:.5px; text-transform:none; font-size:13px; margin-top:3px; font-family:'Spectral',serif; }
+  .panel{ padding:38px 28px 52px; }
+  .foto{ background-size:cover; background-position:center; }
+
+  /* ============ OPCIÓN A — CLÁSICO REFINADO (luz) ============ */
+  .A{ background:#f6f2e9; color:#1a1713; }
+  .A .wrap{ max-width:900px; margin:0 auto; }
+  .A .kick{ display:flex; justify-content:space-between; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#857c6b; border-bottom:1px solid #1a1713; padding-bottom:7px; }
+  .A h2.cab{ font-family:'Playfair Display',serif; font-weight:900; font-size:64px; text-align:center; letter-spacing:1px; margin:10px 0 4px; }
+  .A .lema{ text-align:center; font-style:italic; color:#857c6b; border-bottom:3px double #1a1713; padding-bottom:14px; margin-bottom:24px; }
+  .A .lead{ display:grid; grid-template-columns:1.1fr 1fr; gap:26px; align-items:center; border-bottom:1px solid #d6cdb8; padding-bottom:24px; }
+  .A .lead .foto{ height:230px; background:#cdbf9f linear-gradient(135deg,#d8cba8,#b9a87f); }
+  .A .src{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#8a1f1f; font-weight:600; }
+  .A .lead h3{ font-family:'Playfair Display',serif; font-weight:700; font-size:34px; line-height:1.12; margin:6px 0 10px; }
+  .A .lead p{ font-size:16px; color:#3a342a; }
+  .A .row{ display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:22px; }
+  .A .row h4{ font-family:'Playfair Display',serif; font-weight:700; font-size:21px; line-height:1.2; margin:4px 0 6px; }
+  .A .row p{ font-size:15px; color:#3a342a; }
+
+  /* ============ OPCIÓN B — NOCTURNO DE LUJO (oscuro) ============ */
+  .B{ background:#0d0d0f; color:#e9e2d2; }
+  .B .wrap{ max-width:900px; margin:0 auto; }
+  .B .kick{ display:flex; justify-content:center; gap:14px; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#8c7f5f; }
+  .B h2.cab{ font-family:'Cormorant Garamond',serif; font-weight:700; font-size:72px; text-align:center; letter-spacing:3px; color:#f0e8d2; margin:4px 0; }
+  .B .hr{ height:1px; background:linear-gradient(90deg,transparent,#c8a24a,transparent); margin:6px 0 26px; }
+  .B .lema{ text-align:center; font-style:italic; color:#a99a72; font-size:15px; margin-top:-18px; margin-bottom:26px; }
+  .B .lead{ display:grid; grid-template-columns:1fr 1.05fr; gap:30px; align-items:center; }
+  .B .lead .foto{ height:260px; background:linear-gradient(135deg,#3a3320,#15140f); border:1px solid #2c2920; }
+  .B .src{ font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#c8a24a; }
+  .B .lead h3{ font-family:'Cormorant Garamond',serif; font-weight:700; font-style:italic; font-size:42px; line-height:1.08; margin:8px 0 12px; color:#f3ecd8; }
+  .B .lead p{ font-size:16px; color:#bcb39c; }
+  .B .row{ display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:30px; border-top:1px solid #2a2820; padding-top:24px; }
+  .B .row h4{ font-family:'Cormorant Garamond',serif; font-weight:700; font-size:25px; line-height:1.15; margin:4px 0 6px; color:#ece4d0; }
+  .B .row p{ font-size:15px; color:#a99f88; }
+
+  /* ============ OPCIÓN C — MODERNO DE AUTOR ============ */
+  .C{ background:#efe9df; color:#14120d; }
+  .C .wrap{ max-width:900px; margin:0 auto; }
+  .C .kick{ display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #14120d; padding-bottom:10px; }
+  .C .kick .tag{ background:#2438e0; color:#fff; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; padding:3px 10px; }
+  .C .kick .date{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:#5a5446; }
+  .C h2.cab{ font-family:'Archivo',sans-serif; font-weight:800; font-size:70px; letter-spacing:-2px; line-height:.95; margin:14px 0 22px; text-transform:uppercase; }
+  .C .lead{ display:grid; grid-template-columns:1.15fr 1fr; gap:28px; align-items:end; }
+  .C .lead .foto{ height:250px; background:#cfc7b6 linear-gradient(135deg,#d2cab7,#9fb0c8); }
+  .C .src{ display:inline-block; background:#2438e0; color:#fff; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; padding:2px 8px; }
+  .C .lead h3{ font-family:'Archivo',sans-serif; font-weight:800; font-size:33px; line-height:1.04; margin:10px 0 10px; letter-spacing:-.5px; }
+  .C .lead p{ font-size:16px; color:#3a352b; font-family:'Spectral',serif; }
+  .C .row{ display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:24px; border-top:2px solid #14120d; padding-top:20px; }
+  .C .row h4{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; line-height:1.12; margin:6px 0 6px; }
+  .C .row p{ font-size:15px; color:#3a352b; }
+
+  @media (max-width:680px){
+    .A .lead,.A .row,.B .lead,.B .row,.C .lead,.C .row{ grid-template-columns:1fr; }
+    .A h2.cab,.C h2.cab{ font-size:46px; } .B h2.cab{ font-size:52px; }
+  }
+</style>
+</head>
+<body>
+  <div class="barra">
+    <h1>Elegí una dirección de diseño</h1>
+    <p>Tres estilos para el diario. Mirá cuál te late más (o combinamos). Las fotos acá son bloques de muestra.</p>
+  </div>
+
+  <!-- OPCIÓN A -->
+  <div class="rotulo">Opción A — Clásico refinado<small>Tipo gran diario internacional (NYT / Le Monde). Luz, serif elegante, autoridad atemporal.</small></div>
+  <div class="panel A"><div class="wrap">
+    <div class="kick"><span>Córdoba · Argentina</span><span>Edición de la mañana</span></div>
+    <h2 class="cab">Mercurio</h2>
+    <div class="lema">Crónica del día · lunes 15 de junio de 2026</div>
+    <div class="lead">
+      <div class="foto"></div>
+      <div>
+        <div class="src">Clarín</div>
+        <h3>Adorni deberá explicar cómo consiguió los dólares en efectivo</h3>
+        <p>El vocero presidencial enfrenta una creciente presión interna mientras la oposición pide explicaciones por sus operaciones en criptomonedas.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div><div class="src">La Voz</div><h4>Llaryora designará a los ganadores de 200 concursos congelados</h4><p>La medida destraba nombramientos que llevaban meses frenados en la provincia.</p></div>
+      <div><div class="src">La Nación</div><h4>Riesgo país en 450 puntos: qué le falta a la Argentina</h4><p>Los mercados observan con cautela el rumbo del programa económico.</p></div>
+    </div>
+  </div></div>
+
+  <!-- OPCIÓN B -->
+  <div class="rotulo">Opción B — Nocturno de lujo<small>Fondo oscuro, dorado y serif dramático. Exclusivo, cinematográfico, "el 1%".</small></div>
+  <div class="panel B"><div class="wrap">
+    <div class="kick"><span>Córdoba</span><span>·</span><span>Edición nocturna</span></div>
+    <h2 class="cab">MERCVRIO</h2>
+    <div class="hr"></div>
+    <div class="lema">Crónica del día · lunes 15 de junio de 2026</div>
+    <div class="lead">
+      <div class="foto"></div>
+      <div>
+        <div class="src">Clarín</div>
+        <h3>Adorni deberá explicar el origen de los dólares en efectivo</h3>
+        <p>La presión interna crece sobre el vocero presidencial mientras se multiplican los pedidos de explicaciones.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div><div class="src">La Nación</div><h4>Riesgo país en 450 puntos: el regreso a los mercados</h4><p>Qué condiciones faltan para volver a financiarse en el mundo.</p></div>
+      <div><div class="src">Clarín</div><h4>EE.UU. e Irán firmarán el viernes: cae el petróleo</h4><p>El acuerdo reordena el tablero energético global.</p></div>
+    </div>
+  </div></div>
+
+  <!-- OPCIÓN C -->
+  <div class="rotulo">Opción C — Moderno de autor<small>Tipografía bold contemporánea + color de marca. Tipo Monocle / Bloomberg Businessweek.</small></div>
+  <div class="panel C"><div class="wrap">
+    <div class="kick"><span class="tag">MERCURIO</span><span class="date">Córdoba · 15 jun 2026 · mañana</span></div>
+    <h2 class="cab">Córdoba<br/>y Argentina</h2>
+    <div class="lead">
+      <div class="foto"></div>
+      <div>
+        <span class="src">Clarín</span>
+        <h3>Adorni deberá explicar cómo consiguió los dólares cash</h3>
+        <p>Crece la presión interna sobre el vocero presidencial por sus operaciones en criptomonedas.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div><span class="src">La Voz</span><h4>Llaryora destraba 200 concursos congelados</h4><p>Se reactivan nombramientos frenados hace meses.</p></div>
+      <div><span class="src">La Nación</span><h4>Riesgo país en 450: qué falta para volver a los mercados</h4><p>El mercado mira el rumbo económico.</p></div>
+    </div>
+  </div></div>
+
+</body>
+</html>

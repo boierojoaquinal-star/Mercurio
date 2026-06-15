@@ -1,0 +1,7 @@
+# Cosas que NUNCA se suben a internet
+.env
+node_modules/
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
