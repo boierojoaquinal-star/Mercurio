@@ -26,16 +26,40 @@ function extraer(html) {
   return { body, scripts };
 }
 
-// Clima de Córdoba (open-meteo, gratis, sin clave)
+// Clima de Córdoba (open-meteo, gratis, sin clave) — actual + 7 días
 async function fetchClima() {
   try {
-    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-31.4201&longitude=-64.1888&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires");
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-31.4201&longitude=-64.1888&current=temperature_2m,apparent_temperature,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FArgentina%2FBuenos_Aires&forecast_days=7");
     if (!r.ok) return null;
     const j = await r.json();
-    const c = j.current?.weather_code;
-    const desc = c == null ? "" : c === 0 ? "Despejado" : c <= 3 ? "Parcialmente nublado" : c <= 48 ? "Niebla" : c <= 67 ? "Lluvia" : c <= 77 ? "Nieve" : c <= 82 ? "Chaparrones" : c >= 95 ? "Tormenta" : "Nublado";
-    return { temp: Math.round(j.current?.temperature_2m), max: Math.round(j.daily?.temperature_2m_max?.[0]), min: Math.round(j.daily?.temperature_2m_min?.[0]), desc };
+    const dias = (j.daily?.time || []).map((t, i) => ({ fecha: t, code: j.daily.weather_code[i], max: Math.round(j.daily.temperature_2m_max[i]), min: Math.round(j.daily.temperature_2m_min[i]), lluvia: j.daily.precipitation_probability_max?.[i] }));
+    return { temp: Math.round(j.current?.temperature_2m), sens: Math.round(j.current?.apparent_temperature), code: j.current?.weather_code, dias };
   } catch { return null; }
+}
+function climaIcono(c) {
+  if (c == null) return { e: "·", d: "" };
+  if (c === 0) return { e: "☀️", d: "Despejado" };
+  if (c <= 2) return { e: "🌤️", d: "Algo nublado" };
+  if (c === 3) return { e: "☁️", d: "Nublado" };
+  if (c <= 48) return { e: "🌫️", d: "Niebla" };
+  if (c <= 57) return { e: "🌦️", d: "Llovizna" };
+  if (c <= 67) return { e: "🌧️", d: "Lluvia" };
+  if (c <= 77) return { e: "❄️", d: "Nieve" };
+  if (c <= 82) return { e: "🌧️", d: "Chaparrones" };
+  if (c <= 86) return { e: "🌨️", d: "Nieve" };
+  if (c >= 95) return { e: "⛈️", d: "Tormenta" };
+  return { e: "☁️", d: "Nublado" };
+}
+function bloqueClima(c) {
+  if (!c) return "";
+  const ic = climaIcono(c.code);
+  const dias = (c.dias || []).map((d, i) => {
+    const di = climaIcono(d.code);
+    const dn = i === 0 ? "Hoy" : new Date(d.fecha + "T12:00:00Z").toLocaleDateString("es-AR", { weekday: "short", timeZone: "America/Argentina/Buenos_Aires" }).replace(".", "");
+    const ll = d.lluvia != null && d.lluvia >= 20 ? `<div class="cd-ll">${d.lluvia}%</div>` : "";
+    return `<div class="cd"><div class="cd-d">${dn}</div><div class="cd-i">${di.e}</div>${ll}<div class="cd-t"><b>${d.max}°</b> ${d.min}°</div></div>`;
+  }).join("");
+  return `<div class="clima-w"><div class="clima-hd">Clima en Córdoba</div><div class="clima-now"><span class="cn-i">${ic.e}</span><span class="cn-t">${c.temp}°</span><span class="cn-d">${ic.d}<br/><small>Sensación ${c.sens}°</small></span></div><div class="clima-sem">${dias}</div></div>`;
 }
 
 // ---- TEMA ÚNICO DE MERCURIO (clásico: marfil, Playfair, bordó) --------------
@@ -212,8 +236,13 @@ const html = `<!DOCTYPE html>
   #portada .pf-filete{ display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 14px; }
   #portada .pf-filete::before,#portada .pf-filete::after{ content:""; border-top:3px double #1a1713; width:min(200px,30%); }
   #portada .pf-filete span{ color:#9c7a37; font-size:22px; }
-  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 14px; }
-  #portada .pf-clima{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#857c6b; margin:0 0 24px; }
+  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 18px; }
+  #portada .clima-w{ max-width:560px; margin:0 auto 26px; background:#efe7d4; border:1px solid #d6cdb8; padding:14px 16px; text-align:center; }
+  #portada .clima-hd{ font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#857c6b; margin-bottom:8px; }
+  #portada .clima-now{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:12px; }
+  #portada .cn-i{ font-size:38px; line-height:1; } #portada .cn-t{ font-size:40px; font-family:'Playfair Display',serif; color:#1a1713; } #portada .cn-d{ font-size:12px; text-align:left; color:#5c5343; font-family:'Space Grotesk',sans-serif; text-transform:uppercase; letter-spacing:1px; line-height:1.5; }
+  #portada .clima-sem{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; border-top:1px solid #d6cdb8; padding-top:12px; }
+  #portada .cd{ font-family:'Space Grotesk',sans-serif; } #portada .cd-d{ font-size:10px; letter-spacing:.5px; text-transform:uppercase; color:#857c6b; } #portada .cd-i{ font-size:20px; margin:3px 0; } #portada .cd-ll{ font-size:9px; color:#3a6e8a; } #portada .cd-t{ font-size:11.5px; color:#5c5343; } #portada .cd-t b{ color:#1a1713; }
   .mx-cards{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
   .mx-card{ font-family:'Space Grotesk',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#1a1713; text-decoration:none; border:1px solid #1a1713; padding:12px 22px; }
   .mx-card:hover{ background:#1a1713; color:#f6f2e9; }
@@ -228,7 +257,7 @@ const html = `<!DOCTYPE html>
     <h1>Mercurio</h1>
     <div class="pf-filete"><span>&#9884;</span></div>
     <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, tecnología, arte y el mundo.</div>
-    ${datosClima ? `<div class="pf-clima">Córdoba &nbsp;·&nbsp; ${datosClima.temp}° &nbsp;·&nbsp; ${datosClima.desc} &nbsp;·&nbsp; máx ${datosClima.max}° / mín ${datosClima.min}°</div>` : ""}
+    ${bloqueClima(datosClima)}
     <div class="mx-cards">${tarjetasPortada}</div>
     <div class="baja">&#8595; Entrá, o elegí una sección arriba</div>
   </header>

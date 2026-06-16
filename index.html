@@ -27,8 +27,13 @@
   #portada .pf-filete{ display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 14px; }
   #portada .pf-filete::before,#portada .pf-filete::after{ content:""; border-top:3px double #1a1713; width:min(200px,30%); }
   #portada .pf-filete span{ color:#9c7a37; font-size:22px; }
-  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 14px; }
-  #portada .pf-clima{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#857c6b; margin:0 0 24px; }
+  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 18px; }
+  #portada .clima-w{ max-width:560px; margin:0 auto 26px; background:#efe7d4; border:1px solid #d6cdb8; padding:14px 16px; text-align:center; }
+  #portada .clima-hd{ font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#857c6b; margin-bottom:8px; }
+  #portada .clima-now{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:12px; }
+  #portada .cn-i{ font-size:38px; line-height:1; } #portada .cn-t{ font-size:40px; font-family:'Playfair Display',serif; color:#1a1713; } #portada .cn-d{ font-size:12px; text-align:left; color:#5c5343; font-family:'Space Grotesk',sans-serif; text-transform:uppercase; letter-spacing:1px; line-height:1.5; }
+  #portada .clima-sem{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; border-top:1px solid #d6cdb8; padding-top:12px; }
+  #portada .cd{ font-family:'Space Grotesk',sans-serif; } #portada .cd-d{ font-size:10px; letter-spacing:.5px; text-transform:uppercase; color:#857c6b; } #portada .cd-i{ font-size:20px; margin:3px 0; } #portada .cd-ll{ font-size:9px; color:#3a6e8a; } #portada .cd-t{ font-size:11.5px; color:#5c5343; } #portada .cd-t b{ color:#1a1713; }
   .mx-cards{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
   .mx-card{ font-family:'Space Grotesk',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#1a1713; text-decoration:none; border:1px solid #1a1713; padding:12px 22px; }
   .mx-card:hover{ background:#1a1713; color:#f6f2e9; }
@@ -167,7 +172,7 @@
     <h1>Mercurio</h1>
     <div class="pf-filete"><span>&#9884;</span></div>
     <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, tecnología, arte y el mundo.</div>
-    <div class="pf-clima">Córdoba &nbsp;·&nbsp; 19° &nbsp;·&nbsp; Parcialmente nublado &nbsp;·&nbsp; máx 19° / mín 5°</div>
+    <div class="clima-w"><div class="clima-hd">Clima en Córdoba</div><div class="clima-now"><span class="cn-i">☁️</span><span class="cn-t">19°</span><span class="cn-d">Nublado<br/><small>Sensación 18°</small></span></div><div class="clima-sem"><div class="cd"><div class="cd-d">Hoy</div><div class="cd-i">☁️</div><div class="cd-t"><b>19°</b> 5°</div></div><div class="cd"><div class="cd-d">mié</div><div class="cd-i">☁️</div><div class="cd-t"><b>17°</b> 7°</div></div><div class="cd"><div class="cd-d">jue</div><div class="cd-i">🌦️</div><div class="cd-ll">25%</div><div class="cd-t"><b>13°</b> 10°</div></div><div class="cd"><div class="cd-d">vie</div><div class="cd-i">🌤️</div><div class="cd-t"><b>17°</b> 8°</div></div><div class="cd"><div class="cd-d">sáb</div><div class="cd-i">☁️</div><div class="cd-t"><b>16°</b> 7°</div></div><div class="cd"><div class="cd-d">dom</div><div class="cd-i">☁️</div><div class="cd-t"><b>14°</b> 6°</div></div><div class="cd"><div class="cd-d">lun</div><div class="cd-i">☁️</div><div class="cd-t"><b>10°</b> 4°</div></div></div></div>
     <div class="mx-cards"><a class="mx-card" href="#sec-argentina">Argentina</a><a class="mx-card" href="#sec-foro">Foro</a><a class="mx-card" href="#sec-mercado">Mercado</a><a class="mx-card" href="#sec-silicio">Silicio</a><a class="mx-card" href="#sec-salon">Salón</a><a class="mx-card" href="#sec-atlas">Atlas</a></div>
     <div class="baja">&#8595; Entrá, o elegí una sección arriba</div>
   </header>
