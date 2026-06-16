@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Profundum — Dossier (ejemplo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --fondo:#060705; --panel:#0b0c08; --panel2:#0f110b; --tinta:#d8dbc8; --muted:#787c62;
+    --oliva:#b3be71; --oliva2:#525c32; --rojo:#c5402f; --rojo2:#54130d; --linea:#1c1f15;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--fondo); color:var(--tinta);
+    font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; line-height:1.7;
+    background-image:radial-gradient(var(--linea) 1px, transparent 1px); background-size:22px 22px; }
+  .clasif{ background:var(--rojo2); color:#f1e4dd; text-align:center; font-size:11px; font-weight:700;
+    letter-spacing:4px; padding:7px 8px; text-transform:uppercase; }
+  .doc{ max-width:840px; margin:0 auto; background:var(--panel); border-left:1px solid var(--linea); border-right:1px solid var(--linea); position:relative; padding:30px 38px 40px; overflow:hidden; }
+  .sello{ position:absolute; top:84px; right:-6px; transform:rotate(11deg); border:3px solid var(--rojo);
+    color:var(--rojo); font-family:'Saira Stencil One',monospace; font-size:30px; letter-spacing:6px;
+    padding:4px 18px; opacity:.85; }
+  /* Cabecera */
+  .kick{ font-size:11px; letter-spacing:3px; color:var(--oliva); text-transform:uppercase; }
+  .codigo{ font-size:11px; letter-spacing:2px; color:var(--muted); margin-top:14px; }
+  h1{ font-family:'Saira Stencil One',monospace; font-weight:400; font-size:clamp(30px,6vw,46px);
+    color:#dfe2cc; letter-spacing:2px; line-height:1.05; margin:4px 0 18px; text-transform:uppercase; }
+  .meta{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--linea); border-left:1px solid var(--linea); margin-bottom:8px; }
+  .meta div{ border-right:1px solid var(--linea); border-bottom:1px solid var(--linea); padding:8px 10px; }
+  .meta .l{ font-size:9.5px; letter-spacing:1.5px; color:var(--muted); text-transform:uppercase; }
+  .meta .v{ font-size:12.5px; color:var(--tinta); margin-top:2px; font-weight:500; }
+  .v.alta{ color:var(--oliva); } .v.mutus{ color:var(--rojo); }
+  /* Secciones */
+  section{ margin-top:30px; }
+  h2{ display:flex; align-items:center; gap:12px; font-size:13px; font-weight:700; letter-spacing:2px;
+    color:var(--oliva); text-transform:uppercase; margin:0 0 12px; }
+  h2 .num{ color:var(--oliva2); }
+  h2::after{ content:""; flex:1; height:1px; background:var(--linea); }
+  p{ margin:0 0 12px; }
+  .dim{ color:var(--muted); }
+  /* Cronología */
+  .crono{ border-left:2px solid var(--oliva2); padding-left:16px; }
+  .crono .ev{ margin-bottom:12px; }
+  .crono .fecha{ color:var(--oliva); font-weight:700; font-size:12.5px; letter-spacing:1px; }
+  /* Fuentes */
+  .fuente{ display:flex; gap:10px; align-items:baseline; padding:9px 0; border-bottom:1px solid var(--linea); }
+  .tag{ flex:none; font-size:9.5px; font-weight:700; letter-spacing:1px; padding:2px 7px; border:1px solid var(--oliva2); color:var(--oliva); text-transform:uppercase; }
+  .tag.norma{ border-color:var(--muted); color:var(--muted); }
+  .tag.caso{ border-color:var(--rojo); color:var(--rojo); }
+  .fuente a{ color:var(--tinta); text-decoration:none; border-bottom:1px dotted var(--muted); }
+  .fuente a:hover{ color:var(--oliva); }
+  /* Actores */
+  .actores{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .actor{ border:1px solid var(--linea); background:var(--panel2); padding:11px 13px; }
+  .actor .n{ font-weight:700; color:#dfe2cc; }
+  .actor .r{ font-size:11px; color:var(--muted); letter-spacing:.5px; }
+  .actor .pos{ font-size:12px; margin-top:5px; }
+  .redact{ background:#000; color:#000; padding:0 6px; user-select:none; }
+  /* Taller / tu tesis */
+  .tesis{ border:1px dashed var(--oliva2); background:rgba(167,181,106,.05); padding:16px 18px; }
+  .tesis .et{ font-size:10px; letter-spacing:2px; color:var(--oliva); text-transform:uppercase; }
+  .tesis .ph{ color:var(--muted); font-style:italic; margin-top:8px; }
+  .conf{ display:inline-flex; align-items:center; gap:7px; font-size:11px; letter-spacing:1px; color:var(--oliva); border:1px solid var(--oliva2); padding:3px 9px; text-transform:uppercase; }
+  .conf .dot{ width:8px; height:8px; border-radius:50%; background:var(--oliva); }
+  @media(max-width:620px){ .meta{ grid-template-columns:repeat(2,1fr); } .actores{ grid-template-columns:1fr; } .doc{ padding:24px 18px 32px; } }
+</style>
+</head>
+<body>
+  <div class="clasif">// PROFUNDUM // CLASIFICACIÓN: MUTUS — NO DIVULGAR //</div>
+  <div class="doc">
+    <div class="sello">MUTUS</div>
+    <div class="kick">Profundum · Archivo de inteligencia</div>
+    <div class="codigo">DOSSIER&nbsp;D-007 &nbsp;·&nbsp; ÁMBITO: ARGENTINA &nbsp;·&nbsp; SALA: DERECHO</div>
+    <h1>Suspensión del juicio a prueba</h1>
+
+    <div class="meta">
+      <div><div class="l">Ref.</div><div class="v">D-007 / PEN</div></div>
+      <div><div class="l">Apertura</div><div class="v">2026-06-10</div></div>
+      <div><div class="l">Actualizado</div><div class="v">2026-06-15</div></div>
+      <div><div class="l">Estado</div><div class="v alta">● ACTIVO</div></div>
+      <div><div class="l">Clasificación</div><div class="v mutus">MUTUS</div></div>
+      <div><div class="l">Confianza</div><div class="v alta">ALTA</div></div>
+      <div><div class="l">Analista</div><div class="v">IA · Gemini</div></div>
+      <div><div class="l">Fuentes</div><div class="v">4 primarias</div></div>
+    </div>
+
+    <section>
+      <h2><span class="num">01</span> Resumen ejecutivo</h2>
+      <p>La <strong>probation</strong> (suspensión del juicio a prueba) permite extinguir la acción penal a cambio de reglas de conducta y reparación, en delitos de pena en expectativa baja. Su alcance —qué delitos admite y cuándo el fiscal puede oponerse— es uno de los debates vivos del proceso penal argentino, reactivado por su uso en causas de alto perfil.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">02</span> Evaluación</h2>
+      <p><span class="conf"><span class="dot"></span> Confianza ALTA</span></p>
+      <p>El instituto está consolidado, pero su aplicación a <strong>delitos económicos complejos</strong> tensiona dos valores: la eficiencia procesal y la percepción social de impunidad. <span class="dim">Qué viene:</span> probable discusión legislativa sobre sus límites y nueva jurisprudencia de Casación fijando estándar para delitos de guante blanco.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">03</span> Cronología</h2>
+      <div class="crono">
+        <div class="ev"><span class="fecha">1994 —</span> La Ley 24.316 incorpora el art. 76 bis del Código Penal: nace la suspensión del juicio a prueba.</div>
+        <div class="ev"><span class="fecha">2008 —</span> Fallo <em>"Acosta"</em> (CSJN): consagra la <strong>tesis amplia</strong> sobre qué delitos admiten probation.</div>
+        <div class="ev"><span class="fecha">2026-06 —</span> Cuatro financistas de la causa "Ruta del Dinero K" acceden a probation y evitan el juicio oral: reabre el debate.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">04</span> Fuentes primarias</h2>
+      <div class="fuente"><span class="tag">Fallo</span><a href="#">CSJN, "Acosta, Alejandro Esteban" (2008) — tesis amplia del art. 76 bis</a></div>
+      <div class="fuente"><span class="tag norma">Norma</span><a href="#">Código Penal de la Nación — art. 76 bis (texto vigente)</a></div>
+      <div class="fuente"><span class="tag">Doctrina</span><a href="#">Comentario doctrinario: el consentimiento fiscal y sus límites</a></div>
+      <div class="fuente"><span class="tag caso">Caso</span><a href="#">Infobae Judiciales — probation en "Ruta del Dinero K" (2026)</a></div>
+    </section>
+
+    <section>
+      <h2><span class="num">05</span> Actores</h2>
+      <div class="actores">
+        <div class="actor"><div class="n">CSJN</div><div class="r">Corte Suprema</div><div class="pos">Fija el estándar interpretativo. Posición: tesis amplia ("Acosta").</div></div>
+        <div class="actor"><div class="n">Cám. Fed. de Casación</div><div class="r">Tribunal de uniformidad</div><div class="pos">Criterios en tensión para delitos económicos.</div></div>
+        <div class="actor"><div class="n">Ministerio Público Fiscal</div><div class="r">Fiscalía</div><div class="pos">Su consentimiento es clave; postura restrictiva en guante blanco.</div></div>
+        <div class="actor"><div class="n"><span class="redact">XXXXXXXXX</span></div><div class="r">Identidad reservada</div><div class="pos">Operador vinculado a la causa testigo.</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">06</span> Taller — tu tesis</h2>
+      <div class="tesis">
+        <div class="et">✎ Tu lectura (la IA te la discute)</div>
+        <div class="ph">— Acá escribís tu postura: ¿la tesis amplia debería tener un freno para delitos económicos? La IA te trae los contraargumentos y la jurisprudencia que te falta. —</div>
+      </div>
+    </section>
+  </div>
+  <div class="clasif">// FIN DEL DOCUMENTO // PROFUNDUM // MUTUS //</div>
+</body>
+</html>

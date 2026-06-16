@@ -2,6 +2,9 @@
 .env
 node_modules/
 
+# Profundum es PRIVADO: sus expedientes nunca se publican
+profundum/
+
 # Archivos temporales del sistema
 .DS_Store
 Thumbs.db
