@@ -145,7 +145,7 @@ function bloqueConcepto(c) {
 function armarHtml(r, candidatas) {
   const ahora = new Date();
   const fechaLarga = ahora.toLocaleDateString("es-AR", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric",
+    timeZone: "America/Argentina/Buenos_Aires", weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
 
   const idx = (o) => (o && Number.isInteger(o.indice) ? candidatas[o.indice] : null);

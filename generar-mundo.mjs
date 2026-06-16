@@ -73,7 +73,7 @@ function tarjeta(x, lead = false) {
 
 function armarHtml(notas, analisis) {
   const ahora = new Date();
-  const fechaLarga = ahora.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const fechaLarga = ahora.toLocaleDateString("es-AR", { timeZone: "America/Argentina/Buenos_Aires", weekday: "long", day: "numeric", month: "long", year: "numeric" });
   const lead = notas[0] ? tarjeta(notas[0], true) : "";
   const resto = notas.slice(1).map((x) => tarjeta(x)).join("\n");
 

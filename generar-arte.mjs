@@ -134,7 +134,7 @@ function tarjetaCultural(etiqueta, item, metaCampos) {
 
 function armarHtml(c, noticias) {
   const ahora = new Date();
-  const fechaLarga = ahora.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const fechaLarga = ahora.toLocaleDateString("es-AR", { timeZone: "America/Argentina/Buenos_Aires", weekday: "long", day: "numeric", month: "long", year: "numeric" });
   const obras = c.obras.map((o, i) => bloqueObra(o, i + 1)).join("\n");
   const album = tarjetaCultural("Álbum del día", c.album, [c.album.artista, c.album.anio, c.album.genero]);
   const peli = tarjetaCultural("Película del día", c.pelicula, [c.pelicula.director, c.pelicula.anio]);

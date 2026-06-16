@@ -152,9 +152,11 @@ const TEMA = `
   }
 `;
 
+const TZ = "America/Argentina/Buenos_Aires";
 const ahora = new Date();
-const fechaLarga = ahora.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-const edicion = ahora.getHours() < 14 ? "Edición de la mañana" : "Edición de la noche";
+const fechaLarga = ahora.toLocaleDateString("es-AR", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+const horaAR = +new Intl.DateTimeFormat("en-US", { timeZone: TZ, hour: "numeric", hour12: false, hourCycle: "h23" }).format(ahora);
+const edicion = horaAR < 12 ? "Edición de la mañana" : horaAR < 19 ? "Edición de la tarde" : "Edición de la noche";
 
 const partes = SECCIONES.map((s) => {
   const html = readFileSync(join(CARPETA, s.archivo), "utf8");

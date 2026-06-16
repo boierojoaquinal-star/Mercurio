@@ -253,11 +253,13 @@ function tarjeta(n, resumen) {
 }
 
 function armarHtml(notas, conclusion) {
+  const TZ = "America/Argentina/Buenos_Aires";
   const ahora = new Date();
   const fechaLarga = ahora.toLocaleDateString("es-AR", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric",
+    timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
-  const edicion = ahora.getHours() < 14 ? "Edición de la mañana" : "Edición de la noche";
+  const horaAR = +new Intl.DateTimeFormat("en-US", { timeZone: TZ, hour: "numeric", hour12: false, hourCycle: "h23" }).format(ahora);
+  const edicion = horaAR < 12 ? "Edición de la mañana" : horaAR < 19 ? "Edición de la tarde" : "Edición de la noche";
   const anioRomano = aRomano(ahora.getFullYear());
   const inicioAnio = new Date(ahora.getFullYear(), 0, 0);
   const numero = Math.floor((ahora - inicioAnio) / 86400000);
