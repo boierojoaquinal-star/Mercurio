@@ -15,6 +15,7 @@ const pasos = [
   "generar-economia.mjs",
   "generar-arte.mjs",
   "generar-mundo.mjs",
+  "generar-tecnologia.mjs",
   "generar-mercurio.mjs", // ensambla el index.html (debe ir último)
 ];
 

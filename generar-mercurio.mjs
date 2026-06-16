@@ -13,6 +13,7 @@ const SECCIONES = [
   { id: "argentina", etiqueta: "Argentina", archivo: "diario.html" },
   { id: "foro", etiqueta: "Foro", archivo: "derecho.html" },
   { id: "mercado", etiqueta: "Mercado", archivo: "economia.html" },
+  { id: "silicio", etiqueta: "Silicio", archivo: "tecnologia.html" },
   { id: "salon", etiqueta: "Salón", archivo: "arte.html" },
   { id: "atlas", etiqueta: "Atlas", archivo: "mundo.html" },
 ];
@@ -23,6 +24,18 @@ function extraer(html) {
   const scripts = [...body.matchAll(/<script[\s\S]*?<\/script>/g)].map((m) => m[0]);
   body = body.replace(/<script[\s\S]*?<\/script>/g, "");
   return { body, scripts };
+}
+
+// Clima de Córdoba (open-meteo, gratis, sin clave)
+async function fetchClima() {
+  try {
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-31.4201&longitude=-64.1888&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires");
+    if (!r.ok) return null;
+    const j = await r.json();
+    const c = j.current?.weather_code;
+    const desc = c == null ? "" : c === 0 ? "Despejado" : c <= 3 ? "Parcialmente nublado" : c <= 48 ? "Niebla" : c <= 67 ? "Lluvia" : c <= 77 ? "Nieve" : c <= 82 ? "Chaparrones" : c >= 95 ? "Tormenta" : "Nublado";
+    return { temp: Math.round(j.current?.temperature_2m), max: Math.round(j.daily?.temperature_2m_max?.[0]), min: Math.round(j.daily?.temperature_2m_min?.[0]), desc };
+  } catch { return null; }
 }
 
 // ---- TEMA ÚNICO DE MERCURIO (clásico: marfil, Playfair, bordó) --------------
@@ -157,6 +170,7 @@ const ahora = new Date();
 const fechaLarga = ahora.toLocaleDateString("es-AR", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" });
 const horaAR = +new Intl.DateTimeFormat("en-US", { timeZone: TZ, hour: "numeric", hour12: false, hourCycle: "h23" }).format(ahora);
 const edicion = horaAR < 12 ? "Edición de la mañana" : horaAR < 19 ? "Edición de la tarde" : "Edición de la noche";
+const datosClima = await fetchClima();
 
 const partes = SECCIONES.map((s) => {
   const html = readFileSync(join(CARPETA, s.archivo), "utf8");
@@ -198,7 +212,8 @@ const html = `<!DOCTYPE html>
   #portada .pf-filete{ display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 14px; }
   #portada .pf-filete::before,#portada .pf-filete::after{ content:""; border-top:3px double #1a1713; width:min(200px,30%); }
   #portada .pf-filete span{ color:#9c7a37; font-size:22px; }
-  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 28px; }
+  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 14px; }
+  #portada .pf-clima{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#857c6b; margin:0 0 24px; }
   .mx-cards{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
   .mx-card{ font-family:'Space Grotesk',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#1a1713; text-decoration:none; border:1px solid #1a1713; padding:12px 22px; }
   .mx-card:hover{ background:#1a1713; color:#f6f2e9; }
@@ -212,7 +227,8 @@ const html = `<!DOCTYPE html>
     <div class="kick">${edicion} · ${fechaLarga}</div>
     <h1>Mercurio</h1>
     <div class="pf-filete"><span>&#9884;</span></div>
-    <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, arte y el mundo.</div>
+    <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, tecnología, arte y el mundo.</div>
+    ${datosClima ? `<div class="pf-clima">Córdoba &nbsp;·&nbsp; ${datosClima.temp}° &nbsp;·&nbsp; ${datosClima.desc} &nbsp;·&nbsp; máx ${datosClima.max}° / mín ${datosClima.min}°</div>` : ""}
     <div class="mx-cards">${tarjetasPortada}</div>
     <div class="baja">&#8595; Entrá, o elegí una sección arriba</div>
   </header>

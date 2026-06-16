@@ -27,7 +27,8 @@
   #portada .pf-filete{ display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 14px; }
   #portada .pf-filete::before,#portada .pf-filete::after{ content:""; border-top:3px double #1a1713; width:min(200px,30%); }
   #portada .pf-filete span{ color:#9c7a37; font-size:22px; }
-  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 28px; }
+  #portada .lema{ font-style:italic; font-size:19px; color:#5c5343; max-width:640px; margin:0 auto 14px; }
+  #portada .pf-clima{ font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#857c6b; margin:0 0 24px; }
   .mx-cards{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
   .mx-card{ font-family:'Space Grotesk',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#1a1713; text-decoration:none; border:1px solid #1a1713; padding:12px 22px; }
   .mx-card:hover{ background:#1a1713; color:#f6f2e9; }
@@ -160,13 +161,14 @@
 </style>
 </head>
 <body>
-  <nav class="mx-nav"><span class="mx-logo">Mercurio</span><a href="#portada">Portada</a><a href="#sec-argentina">Argentina</a><a href="#sec-foro">Foro</a><a href="#sec-mercado">Mercado</a><a href="#sec-salon">Salón</a><a href="#sec-atlas">Atlas</a></nav>
+  <nav class="mx-nav"><span class="mx-logo">Mercurio</span><a href="#portada">Portada</a><a href="#sec-argentina">Argentina</a><a href="#sec-foro">Foro</a><a href="#sec-mercado">Mercado</a><a href="#sec-silicio">Silicio</a><a href="#sec-salon">Salón</a><a href="#sec-atlas">Atlas</a></nav>
   <header id="portada">
-    <div class="kick">Edición de la noche · martes, 16 de junio de 2026</div>
+    <div class="kick">Edición de la tarde · martes, 16 de junio de 2026</div>
     <h1>Mercurio</h1>
     <div class="pf-filete"><span>&#9884;</span></div>
-    <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, arte y el mundo.</div>
-    <div class="mx-cards"><a class="mx-card" href="#sec-argentina">Argentina</a><a class="mx-card" href="#sec-foro">Foro</a><a class="mx-card" href="#sec-mercado">Mercado</a><a class="mx-card" href="#sec-salon">Salón</a><a class="mx-card" href="#sec-atlas">Atlas</a></div>
+    <div class="lema">El diario personal que se cultiva: Argentina, derecho, economía, tecnología, arte y el mundo.</div>
+    <div class="pf-clima">Córdoba &nbsp;·&nbsp; 19° &nbsp;·&nbsp; Parcialmente nublado &nbsp;·&nbsp; máx 19° / mín 5°</div>
+    <div class="mx-cards"><a class="mx-card" href="#sec-argentina">Argentina</a><a class="mx-card" href="#sec-foro">Foro</a><a class="mx-card" href="#sec-mercado">Mercado</a><a class="mx-card" href="#sec-silicio">Silicio</a><a class="mx-card" href="#sec-salon">Salón</a><a class="mx-card" href="#sec-atlas">Atlas</a></div>
     <div class="baja">&#8595; Entrá, o elegí una sección arriba</div>
   </header>
   <section id="sec-argentina" class="seccion">
@@ -419,6 +421,115 @@
   </div>
   
   
+</section>
+<section id="sec-silicio" class="seccion">
+  <div class="hoja">
+    <div class="top"><span>Tecnología e inteligencia artificial</span><span>martes, 16 de junio de 2026</span></div>
+    <h1 class="cab">Silicio</h1>
+    <div class="lema">El pulso de la tecnología y la IA</div>
+    
+    <article class="lead">
+      <div class="foto foto-lead" style="background-image:url('https://cdn.arstechnica.net/wp-content/uploads/2026/06/GettyImages-1828746438-1152x648.jpg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Big Tech</span><span class="src">Ars Technica</span></div>
+        <h3 class="lead-titulo">Documentos financieros filtrados revelan que OpenAI está perdiendo miles de millones de dólares al año</h3>
+        <p class="resumen">Documentos financieros auditados de OpenAI, la empresa detrás de ChatGPT, han sido filtrados, mostrando que la compañía está registrando pérdidas multimillonarias anualmente. A pesar de un crecimiento notable en sus ingresos, estos se ven superados por los enormes gastos en investigación y desarrollo, así como otras inversiones operativas. Esta situación plantea interrogantes sobre la sostenibilidad del modelo de negocio de las empresas líderes en IA a largo plazo.</p>
+        <a class="leer" href="https://arstechnica.com/ai/2026/06/leaked-financial-docs-show-openai-is-losing-billions-of-dollars-a-year/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+    <div class="grilla">
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://cdn.arstechnica.net/wp-content/uploads/2026/06/Cursor-1152x648-1781627048.png')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Big Tech</span><span class="src">Ars Technica</span></div>
+        <h3 class="titulo">SpaceX adquirirá la plataforma de codificación de IA Cursor por 60 mil millones de dólares</h3>
+        <p class="resumen">SpaceX, la compañía de Elon Musk, ha anunciado su intención de adquirir la plataforma de codificación de inteligencia artificial Cursor por una suma de 60 mil millones de dólares. Esta adquisición busca integrar capacidades avanzadas de IA en el desarrollo de software y operaciones de SpaceX, potenciando su eficiencia y capacidad de innovación. La fusión de estas dos empresas, que por separado no podían competir en ciertos frentes, apunta a crear una sinergia poderosa en el ámbito tecnológico.</p>
+        <a class="leer" href="https://arstechnica.com/ai/2026/06/spacex-will-acquire-coding-tool-cursor-to-compete-with-anthropic-openai/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto sin-foto">MIT Tech Review</div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Ciencia</span><span class="src">MIT Tech Review</span></div>
+        <h3 class="titulo">Este hombre con ELA es el &quot;primer usuario avanzado&quot; de un implante cerebral que le permite hablar</h3>
+        <p class="resumen">Casey Harrell, un hombre con esclerosis lateral amiotrófica (ELA) y parálisis, se ha convertido en el &quot;primer usuario avanzado&quot; de un implante cerebral que le permite comunicarse. Ha acumulado miles de horas utilizando esta interfaz cerebro-computadora (BCI) para &quot;hablar&quot; a través de oraciones generadas por el dispositivo. Este avance representa un hito significativo en la tecnología de asistencia y la neurociencia, ofreciendo esperanza a personas con discapacidades severas.</p>
+        <a class="leer" href="https://www.technologyreview.com/2026/06/15/1138953/man-als-first-power-user-brain-implant-speak-bci/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://cdn.arstechnica.net/wp-content/uploads/2026/06/Hegseth-Congress-1024x648.jpg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">IA</span><span class="src">Ars Technica</span></div>
+        <h3 class="titulo">El Pentágono se jacta de usar IA para redactar informes exigidos por el Congreso</h3>
+        <p class="resumen">El Pentágono ha revelado que está utilizando herramientas de inteligencia artificial generativa para redactar informes que le son solicitados por el Congreso. Además, afirma que aproximadamente 1.5 millones de miembros de su personal ya están empleando estas herramientas de IA en diversas tareas. Esta adopción masiva subraya la creciente integración de la IA en las operaciones gubernamentales y de defensa, buscando optimizar procesos y reducir la carga de trabajo manual.</p>
+        <a class="leer" href="https://arstechnica.com/ai/2026/06/pentagon-boasts-of-using-ai-to-write-reports-mandated-by-congress/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://i.blogs.es/119fe6/intel-cpu/1024_2000.jpeg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Hardware</span><span class="src">Xataka</span></div>
+        <h3 class="titulo">ByteDance fabricará sus propias CPU al considerar caras las de Intel y AMD</h3>
+        <p class="resumen">ByteDance, la empresa matriz de TikTok, ha decidido dejar de depender de Intel y AMD para el suministro de procesadores para sus centros de datos. La compañía china considera que los costos actuales son demasiado altos y, por ello, ha iniciado el desarrollo de sus propias Unidades Centrales de Procesamiento (CPU). Esta estrategia busca reducir costos, aumentar la autonomía tecnológica y optimizar el hardware para sus necesidades específicas de IA y computación.</p>
+        <a class="leer" href="https://www.xataka.com/empresas-y-economia/bytedance-ha-decidido-que-intel-amd-le-salen-demasiado-caros-asi-que-va-a-fabricar-sus-propias-cpu" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://platform.theverge.com/wp-content/uploads/sites/2/2026/06/snapdragonreality.jpg?quality=90&amp;#038;strip=all&amp;#038;crop=0,0,100,100')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Hardware</span><span class="src">The Verge</span></div>
+        <h3 class="titulo">El último chip de Qualcomm sugiere la llegada de gafas inteligentes más potentes</h3>
+        <p class="resumen">Qualcomm ha presentado su nuevo chip Snapdragon Reality Elite, diseñado para potenciar la próxima generación de dispositivos de realidad extendida (XR). Este avance en el silicio sugiere que estamos al borde de ver gafas inteligentes mucho más capaces y con un rendimiento superior. Aunque la categoría de gafas inteligentes aún es incipiente, la inversión de Qualcomm en chips especializados indica un futuro prometedor para estos dispositivos.</p>
+        <a class="leer" href="https://www.theverge.com/gadgets/950229/qualcomm-snapdragon-reality-elite-xr-smart-glasses-wearables" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto sin-foto">OpenAI</div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">IA</span><span class="src">OpenAI</span></div>
+        <h3 class="titulo">Predicción del comportamiento del modelo antes del lanzamiento simulando su despliegue</h3>
+        <p class="resumen">OpenAI ha introducido el &#39;Deployment Simulation&#39;, un nuevo método para predecir el comportamiento de los modelos de IA antes de su despliegue público. Esta técnica utiliza datos de conversaciones reales para mejorar la seguridad y la precisión de la evaluación de los modelos. El objetivo es identificar y corregir posibles fallos o comportamientos indeseados en un entorno controlado, asegurando un lanzamiento más seguro y confiable de la inteligencia artificial.</p>
+        <a class="leer" href="https://openai.com/index/deployment-simulation" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://s.w.org/images/core/emoji/17.0.2/72x72/2728.png')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Ciencia</span><span class="src">MIT Tech Review</span></div>
+        <h3 class="titulo">Por qué la &quot;reprogramación&quot; es el enfoque más popular para revertir el envejecimiento actualmente</h3>
+        <p class="resumen">La &quot;reprogramación&quot; celular se ha convertido en el enfoque más prometedor y comentado para revertir el envejecimiento y tratar enfermedades relacionadas con la edad. Recientemente, Life Biosciences, una empresa de biotecnología, anunció que ha administrado su primer tratamiento experimental a un voluntario con glaucoma. La idea es regenerar tejidos y tratar enfermedades mediante la manipulación de procesos biológicos que controlan el envejecimiento a nivel celular.</p>
+        <a class="leer" href="https://www.technologyreview.com/2026/06/12/1138829/reprogramming-buzziest-approach-reversing-aging-right-now/" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://platform.theverge.com/wp-content/uploads/sites/2/2026/06/android-17.jpg?quality=90&amp;#038;strip=all&amp;#038;crop=0,0,100,100')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">Software</span><span class="src">The Verge</span></div>
+        <h3 class="titulo">Android 17 llega hoy a los teléfonos Pixel</h3>
+        <p class="resumen">Google ha comenzado a desplegar Android 17 en los teléfonos Pixel compatibles, junto con características exclusivas adicionales como parte del &#39;Pixel Drop&#39; de junio. Entre los cambios más destacados se encuentran las nuevas ventanas flotantes &#39;Bubble&#39; para una multitarea más sencilla. Aunque no todas las funciones anunciadas en el debut oficial del sistema operativo están disponibles de inmediato, esta actualización trae mejoras significativas a la experiencia del usuario.</p>
+        <a class="leer" href="https://www.theverge.com/tech/950651/android-17-release-pixel-drop-google-bubble-screen-reaction" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article>
+
+    <article class="nota">
+      <div class="foto" style="background-image:url('https://i.blogs.es/1ea7f3/revisar-los-errores-de-la-ia/1024_2000.jpeg')"></div>
+      <div class="cuerpo">
+        <div class="metas"><span class="region">IA</span><span class="src">Xataka</span></div>
+        <h3 class="titulo">La paradoja del &quot;botsitting&quot;: la IA no libera, sino que crea una nueva tarea agotadora</h3>
+        <p class="resumen">Se ha acuñado el término &quot;botsitting&quot; para describir la nueva tarea que surge cuando la inteligencia artificial, en lugar de liberar de trabajo, genera una labor adicional y agotadora. Esta paradoja ilustra cómo la supervisión, corrección y reeducación constante de los sistemas de IA puede consumir más tiempo y energía de lo esperado. En lugar de automatizar completamente, la IA puede requerir una gestión activa que, a la larga, resulta más extenuante que la tarea original.</p>
+        <a class="leer" href="https://www.xataka.com/robotica-e-ia/paradoja-botsitting-cuando-ia-no-te-libera-trabajo-sino-que-crea-nueva-tarea-que-termina-agotandote" target="_blank" rel="noopener">Leer la nota &#8594;</a>
+      </div>
+    </article></div>
+    <div class="analisis"><b>Hacia dónde va</b>La tecnología actual se encamina hacia una integración cada vez más profunda de la inteligencia artificial en todos los ámbitos, desde la defensa hasta la salud y la vida cotidiana. Vemos una fuerte apuesta por la autonomía tecnológica, con grandes empresas desarrollando su propio hardware para reducir dependencias y optimizar recursos. Al mismo tiempo, la ciencia aplicada, especialmente en neurotecnología y biomedicina, está logrando avances que antes parecían ciencia ficción, abriendo puertas a soluciones para enfermedades y discapacidades. Sin embargo, persisten desafíos importantes en la sostenibilidad económica de los modelos de negocio de IA y en la gestión de la complejidad que la propia automatización puede generar.</div>
+    <footer>Silicio · sección tecnología de Mercurio · martes, 16 de junio de 2026<br/>Fuentes: MIT Tech Review · The Verge · Ars Technica · Xataka · Import AI · OpenAI · Resúmenes por IA</footer>
+  </div>
 </section>
 <section id="sec-salon" class="seccion">
   <div class="hoja">
